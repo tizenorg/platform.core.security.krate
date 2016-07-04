@@ -1,0 +1,52 @@
+group { name: "security_layout";
+	parts {
+		part { name: "bg";
+			type: RECT;
+			scale: 0;
+			repeat_events: 0;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 0.0;}
+				rel2 { relative: 1.0 1.0;}
+				min: 720 600;
+				max: 720 800;
+				visible: 0;
+			}
+		}
+		part { name: "title";
+			type: TEXT;
+			scale: 0;
+			description { state: "default" 0.0;
+				color: 0 0 0 255;
+				rel1 { relative: 0.0 0.1; to: "bg"; offset: 45 0;}
+				rel2 { relative: 1.0 0.1; to: "bg"; offset: -45 40;}
+				text { font: "Tizen:style=Regular"; size: "32"; align: 0.0 0.5; }
+			}
+		}
+		part { name: "entry_bg";
+			type: RECT;
+			scale: 0;
+			description { state: "default" 0.0;
+				color: 255 255 255 0;
+				rel1 { relative: 0.0 0.2; to: "bg"; offset: 45 0;}
+				rel2 { relative: 1.0 0.2; to: "bg"; offset: -45 60;}
+			}
+		}
+		part { name: "entry";
+			type: SWALLOW;
+			scale: 0;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 0.0; to: "entry_bg";}
+				rel2 { relative: 1.0 1.0; to: "entry_bg";}
+			}
+		}
+		 part { name: "entry_separator";
+			type: RECT;
+			scale: 0;
+			description { state: "default" 0.0;
+				color: 7 180 211 250;
+				rel1 { relative: 0.0 1.0; to: "entry";}
+				rel2 { relative: 1.0 1.0; to: "entry"; offset: 0 2;}
+			}
+		}
+	}
+}

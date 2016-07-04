@@ -1,0 +1,90 @@
+group { name: "main_window";
+	parts {
+		part { name: "bg";
+			type: RECT;
+			mouse_events: 1;
+			repeat_events: 0;
+			description { state: "default" 0.0;
+				color: 0 0 0 0;
+				rel1 {relative: 0.0 0.0;}
+				rel2 {relative: 1.0 1.0;}
+			}
+		}
+		part { name: "popup_window";
+			type: SWALLOW;
+			description { state: "default" 0.0;
+				rel1 {relative: 0.0 0.2; to: "bg"; offset: 22 0;}
+				rel2 {relative: 1.0 0.8; to: "bg"; offset: -22 0;}
+			}
+		}
+		programs {
+			program { name: "background_clicked_cb";
+				signal: "mouse,clicked,1";
+				source: "bg";
+				action: SIGNAL_EMIT "bg_clicked" "layout";
+			}
+		}
+	}
+}
+
+group { name: "popup_layout";
+	images{
+		image: "popup_bg.png" COMP;
+	}
+	parts {
+		part { name: "bg";
+			type: IMAGE;
+			description { state: "default" 0.0;
+				rel1 {relative: 0.0 0.0;}
+				rel2 {relative: 1.0 1.0;}
+				image {
+					normal: "popup_bg.png";
+					border: 5 5 5 5;
+				}
+			}
+		}
+		part { name: "separator";
+			type: RECT;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.07 62/569; to: "bg";}
+				rel2 {relative: 0.93 64/569; to: "bg";}
+				color: 7 180 211 250;
+			}
+		}
+		part { name: "popup_title_bg";
+			type: SWALLOW;
+			description { state: "default" 0.0;
+				rel1 {relative: 0.15 0; to: "bg";}
+				rel2 {relative: 0.85 62/569; to: "bg";}
+				color: 0 0 0 0;
+				visible: 0;
+			}
+			description { state: "done" 0.0;
+				inherit: "default" 0.0;
+				visible: 1;
+			}
+		}
+		part { name: "popup_title";
+			type: TEXT;
+			mouse_events: 1;
+			repeat_events: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 0.0; to: "popup_title_bg";}
+				rel2 { relative: 1.0 1.0; to: "popup_title_bg";}
+				color: 7 180 211 250;
+				visible: 1;
+				text {
+					text: "";
+					size: 40;
+				}
+			}
+		}
+		part { name: "popup_content";
+			type: SWALLOW;
+			description { state: "default";
+				rel1 {relative: 0.0 0.0; to_x: "bg"; to_y: "separator"; offset: 22 22;}
+				rel2 {relative: 1.0 1.0; to: "bg"; offset: -22 -22;}
+			}
+		}
+	}
+}

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest version="0.1.0">
+    <capability></capability>
+    <filesystem>
+        <!--<entry source="" target="" type="none" option="rw,rbind" />-->
+    </filesystem>
+    <network>
+        <!--<interface name="eth0" address="10.254.34.232" netmask="" gateway="" />-->
+    </network>
+</manifest>

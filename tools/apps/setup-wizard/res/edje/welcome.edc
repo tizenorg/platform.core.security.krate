@@ -1,0 +1,92 @@
+/*
+ * Tizen Zone Setup-Wizard Layout
+ *
+ * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+group { name: "welcome_layout";
+	images {
+		image: "../images/icon.png" COMP;
+		image: "../images/theme_bg.png" COMP;
+	}
+	parts {
+		part { name: "bg";
+			type: IMAGE;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 0.0; }
+				rel2 { relative: 1.0 1.0; }
+				image.normal: "../images/theme_bg.png";
+			}
+		}
+		part { name: "title";
+			type: TEXT;
+			scale: 1;
+			effect: SHADOW;
+			description { state: "default" 0.0;
+				color: 255 255 255 255;
+				color3: 85 88 88 255;
+				rel1 { relative: 0.0 0.0; to: "bg"; offset: 22 150;}
+				rel2 { relative: 1.0 0.0; to: "bg"; offset: -22 300;}
+				text { font: "Tizen:style=Regular"; size: "48"; align: 0.5 0.5; text: "Separated Zone";}
+			}
+		}
+		part { name: "icon_base";
+			type: RECT;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 1.0; to_x: "bg"; to_y: "title"; offset: 0 80;}
+				rel2 { relative: 1.0 1.0; to_x: "bg"; to_y: "title"; offset: 0 350;}
+				visible: 0;
+			}
+		}
+		part { name: "icon";
+			type: IMAGE;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 0.0; to: "icon_base";}
+				rel2 { relative: 1.0 1.0; to: "icon_base";}
+				align: 0.5 0.0;
+				max: 170 170;
+				image.normal: "../images/icon.png";
+			}
+		}
+		part { name: "top_padding";
+			type: RECT;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 1.0; to: "icon_base"; }
+				rel2 { relative: 1.0 1.0; to: "icon_base"; offset: 0 80;}
+				visible: 0;
+			}
+		}
+		part { name: "message_title";
+			type: SWALLOW;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 1.0; to: "top_padding";}
+				rel2 { relative: 1.0 1.0; to: "top_padding"; offset: 0 50;}
+			}
+		}
+		part { name: "message_content";
+			type: SWALLOW;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 1.0; to: "message_title"; offset: 0 22;}
+				rel2 { relative: 1.0 1.0; to: "bg";}
+			}
+		}
+	}
+}

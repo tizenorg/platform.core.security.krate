@@ -1,0 +1,11 @@
+[Unit]
+Description=Krate
+
+[Service]
+Type=simple
+ExecStart=${TZ_SYS_BIN}/krate
+Restart=on-failure
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

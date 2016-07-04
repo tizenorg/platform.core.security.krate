@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="3.0" package="org.tizen.keyguard" version="1.0.0">
+    <profile name="mobile"/>
+    <privileges>
+        <privilege>http://tizen.org/privilege/shortcut</privilege>
+        <privilege>http://tizen.org/privilege/appmanager.launch</privilege>
+    </privileges>
+    <ui-application appid="org.tizen.keyguard" exec="/usr/apps/org.tizen.keyguard/bin/org.tizen.keyguard" multiple="false" nodisplay="true" taskmanage="false" type="capp">
+        <label>Keyguard</label>
+    </ui-application>
+</manifest>

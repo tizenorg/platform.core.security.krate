@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest xmlns="http://tizen.org/ns/packages" api-version="3.0" package="org.tizen.krate-setup-wizard" version="1.0.0">
+    <profile name="mobile"/>
+    <privileges>
+        <privilege>http://tizen.org/privilege/notification</privilege>
+        <privilege>http://tizen.org/privilege/appmanager.launch</privilege>
+    </privileges>
+    <ui-application appid="org.tizen.krate-setup-wizard" exec="/usr/apps/org.tizen.krate-setup-wizard/bin/org.tizen.krate-setup-wizard" multiple="false" nodisplay="true" taskmanage="false" type="capp">
+        <label>Krate setup wzard</label>
+    </ui-application>
+</manifest>

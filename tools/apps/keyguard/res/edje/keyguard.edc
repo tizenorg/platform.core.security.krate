@@ -1,0 +1,119 @@
+/*
+ * Tizen Zone Keyguard Layout
+ *
+ * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+group { name: "base_layout";
+	images {
+		image: "../images/theme_bg.png" COMP;
+		image: "../images/icon.png" COMP;
+	}
+	parts {
+		part { name: "bg";
+			type: IMAGE;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative : 0.0 0.0;}
+				rel2 { relative : 1.0 1.0;}
+				image.normal: "../images/theme_bg.png";
+			}
+		}
+		part { name: "icon";
+			type:IMAGE;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative : 0.0 0.0; to: "bg"; offset: 0 50;}
+				rel2 { relative : 1.0 0.2; to: "bg"; offset: 0 0;}
+				max: 110 110;
+				align: 0.5 0.5;
+				image.normal: "../images/icon.png";
+			}
+		}
+		part { name: "title";
+			type: TEXT;
+			scale: 1;
+			effect: SHADOW;
+			description { state: "default" 0.0;
+				color: 255 255 255 255;
+				color3: 85 88 88 255;
+				rel1 { relative: 0.0 1.0; to_x: "bg"; to_y: "icon"; offset: 22 22;}
+				rel2 { relative: 1.0 1.0; to_x: "bg"; to_y: "icon"; offset: -22 72;}
+				text { font: "Tizen:style=Regular"; size: "40"; align: 0.5 0.5; text: "Krate";}
+			}
+		}
+		part { name: "entry_info_text";
+			type: TEXT;
+			scale: 1;
+			description { state: "default" 0.0;
+				color: 255 255 255 255;
+				rel1 { relative: 0.0 1.0; to: "title"; offset: 0 80;}
+				rel2 { relative: 1.0 1.0; to: "title"; offset: 0 120;}
+				text { font: "Tizen:style=Regular"; size: "24"; align: 0.0 0.5; text: "Enter password";}
+			}
+		}
+		part { name: "entry_bg";
+			type: RECT;
+			scale: 1;
+			description { state: "default" 0.0;
+				color: 255 255 255 255;
+				rel1 { relative: 0.0 1.0; to: "entry_info_text"; offset: 0 22;}
+				rel2 { relative: 1.0 1.0; to: "entry_info_text"; offset: 0 82;}
+			}
+		}
+		part { name: "entry";
+			type: SWALLOW;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 0.0; to: "entry_bg";}
+				rel2 { relative: 1.0 1.0; to: "entry_bg";}
+			}
+		}
+		part { name: "check_box";
+			type: SWALLOW;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 0.0 0.4; to: "bg"; offset: 22 22;}
+				rel2 { relative: 0.1 0.4; to: "bg"; offset: 0 82;}
+			}
+		}
+		part { name: "check_text";
+			type: TEXT;
+			scale: 1;
+			description { state: "default" 0.0;
+				rel1 { relative: 1.0 0.0; to: "check_box"; offset: 22 0;}
+				rel2 { relative: 1.0 1.0; to_x: "bg"; to_y: "check_box"; offset: -22 0;}
+				text { font: "Tizen:style=Regular"; size: "24"; align: 0.0 0.5; text: "Show password";}
+			}
+		}
+		part { name: "bottom_text";
+			type: TEXT;
+			scale: 1;
+			description { state: "default" 0.0;
+				color: 255 255 255 255;
+				rel1 { relative: 0.0 0.6; to: "bg"; offset: 22 0;}
+				rel2 { relative: 1.0 0.6; to: "bg"; offset: -22 40;}
+				text { font: "Tizen:style=Regular"; size: "24"; align: 0.0 0.5; text: "Forgot your Krate unlock method?";}
+			}
+		}
+		programs {
+			program { name: "text_clicked_cb";
+				signal: "mouse,clicked,1";
+				source: "bottom_text";
+				action: SIGNAL_EMIT "text_clicked" "layout";
+			}
+		}
+	}
+}
