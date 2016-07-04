@@ -48,5 +48,15 @@ group { name: "security_layout";
 				rel2 { relative: 1.0 1.0; to: "entry"; offset: 0 2;}
 			}
 		}
+		part { name: "entry_info";
+			type: TEXT;
+			scale: 0;
+			description { state: "default" 0.0;
+				color: 140 140 140 255;
+				rel1 { relative: 0.0 0.3; to: "bg"; offset: 45 22;}
+				rel2 { relative: 1.0 0.3; to: "bg"; offset: -45 62;}
+				text { font: "Tizen:style=Regular"; size: "32"; align: 0.0 0.5; }
+			}
+		}
 	}
 }
