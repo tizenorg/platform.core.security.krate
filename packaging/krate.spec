@@ -119,7 +119,39 @@ developing the krate client program.
 %{_includedir}/krate
 %{_libdir}/pkgconfig/krate.pc
 
+## PAM Plugin Package ########################################################
+%package -n dpm-pam-krate
+Summary: PAM Plugin for zone policy in device policy manager
+Group: Development/Libraries
+Requires: systemd
+
+%description -n dpm-pam-krate
+PAM Plugin for zone policy in device policy manager and CLI tool
+
+%post -n dpm-pam-krate
+mv /etc/pam.d/systemd-user /etc/pam.d/systemd-user.keep
+cp /etc/pam.d/systemd-user-zone /etc/pam.d/systemd-user
+
+%postun -n dpm-pam-krate
+mv /etc/pam.d/systemd-user.keep /etc/pam.d/systemd-user
+
+%files -n dpm-pam-krate
+%manifest krate.manifest
+%defattr(600,root,root,700)
+%attr(700,root,root) %{_libdir}/security/pam_*.so
+%attr(700,root,root) %{_sbindir}/krate-admin-cli
+%attr(700,root,root) %dir %{TZ_SYS_ETC}/krate
+%attr(600,root,root) %config %{TZ_SYS_ETC}/krate/owner.xml
+%attr(700,root,root) /etc/gumd/useradd.d/20_pam-krate-add.post
+%attr(700,root,root) /etc/gumd/userdel.d/20_pam-krate-remove.post
+%attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/indicator_icon.png
+%attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/noti_list_sub_icon.png
+%config /etc/pam.d/*
+
 %endif
+
+## Begin of mobile feature ###################################################
+%if "%{profile}" == "mobile"
 
 ## Krate Setup Wizard Package #################################################
 %package -n org.tizen.krate-setup-wizard
@@ -131,7 +163,6 @@ BuildRequires: pkgconfig(capi-appfw-application)
 BuildRequires: pkgconfig(evas)
 BuildRequires: pkgconfig(notification)
 BuildRequires: pkgconfig(zone)
-Requires: libzone = %{version}-%{release}
 
 %description -n org.tizen.krate-setup-wizard
 Tizen Krate setup wizard interface for zone
@@ -193,33 +224,4 @@ Tizen Krate keyguard interface
 %{keyguard_home}/res/*
 %{TZ_SYS_RO_PACKAGES}/org.tizen.keyguard.xml
 
-%if 0
-## PAM Plugin Package ########################################################
-%package -n dpm-pam-krate
-Summary: PAM Plugin for zone policy in device policy manager
-Group: Development/Libraries
-Requires: systemd
-
-%description -n dpm-pam-krate
-PAM Plugin for zone policy in device policy manager and CLI tool
-
-%post -n dpm-pam-krate
-mv /etc/pam.d/systemd-user /etc/pam.d/systemd-user.keep
-cp /etc/pam.d/systemd-user-zone /etc/pam.d/systemd-user
-
-%postun -n dpm-pam-krate
-mv /etc/pam.d/systemd-user.keep /etc/pam.d/systemd-user
-
-%files -n dpm-pam-krate
-%manifest krate.manifest
-%defattr(600,root,root,700)
-%attr(700,root,root) %{_libdir}/security/pam_*.so
-%attr(700,root,root) %{_sbindir}/krate-admin-cli
-%attr(700,root,root) %dir %{TZ_SYS_ETC}/krate
-%attr(600,root,root) %config %{TZ_SYS_ETC}/krate/owner.xml
-%attr(700,root,root) /etc/gumd/useradd.d/20_pam-krate-add.post
-%attr(700,root,root) /etc/gumd/userdel.d/20_pam-krate-remove.post
-%attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/indicator_icon.png
-%attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/noti_list_sub_icon.png
-%config /etc/pam.d/*
 %endif
