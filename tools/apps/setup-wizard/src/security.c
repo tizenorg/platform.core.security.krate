@@ -48,6 +48,7 @@ static unsigned int security_passphrase_mode = PASSPHRASE_STATE_UNDEFINED;
 static int security_lock_type_selected = 0;
 
 static void create_password_setup_view(appdata_s *ad);
+static void security_password_entry_changed_cb(void *data, Evas_Object *obj, void *event_info);
 
 static char *security_multiline_text_get(void *data, Evas_Object *obj, const char *part)
 {
@@ -134,34 +135,59 @@ static void security_lock_type_select_cb(void *data, Evas_Object *obj, void *eve
  	security_lock_type_selected = locktype->index;
 }
 
-static Eina_Bool security_pop_cb(void *data, Elm_Object_Item *it)
+static Eina_Bool security_view_pop_cb(void *data, Elm_Object_Item *it)
 {
 	elm_object_signal_emit(ud.conform, "elm,state,indicator,overlap", "elm");
 
 	return EINA_TRUE;
 }
 
-static void security_previous_view_cb(void *data, Evas_Object *obj, void *event_info)
+static Eina_Bool password_view_pop_cb(void *data, Elm_Object_Item *it)
 {
 	if (security_passphrase_mode != PASSPHRASE_STATE_UNDEFINED) {
-		security_passphrase_mode--;
-	}
+		Evas_Object *entry = (Evas_Object *)evas_object_data_get(ud.nf, "setup_entry");
+		evas_object_smart_callback_add(entry, "changed", security_password_entry_changed_cb, NULL);
+                security_passphrase_mode--;
+        }
+	return EINA_TRUE;
+}
+
+static void delete_object_data(void)
+{
+	evas_object_data_del(ud.nf, "setup_entry");
+	evas_object_data_del(ud.nf, "setup_button");
+	evas_object_data_del(ud.nf, "verify_entry");
+	evas_object_data_del(ud.nf, "verify_button");
+}
+
+static void security_previous_view_cb(void *data, Evas_Object *obj, void *event_info)
+{
 	elm_naviframe_item_pop(ud.nf);
 }
 
 static void security_password_setup_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	appdata_s *ad = (appdata_s *)data;
+	Evas_Object *entry;
 	if (security_passphrase_mode < PASSPHRASE_STATE_VERIFY) {
 		security_passphrase_mode++;
+		entry = (Evas_Object *)evas_object_data_get(ud.nf, "setup_entry");
+		evas_object_smart_callback_del(entry, "changed", security_password_entry_changed_cb);
 		create_password_setup_view(ad);
 		return;
 	}
 
 	if (strcmp(security_password_setup_data, security_password_verify_data) != 0) {
+		entry = (Evas_Object *)evas_object_data_get(ud.nf, "verify_entry");
+		elm_entry_entry_set(entry, "");
+		elm_entry_input_panel_hide(entry);
+
+		Evas_Object *layout = (Evas_Object *)evas_object_data_get(ud.nf, "layout");
+		elm_object_part_text_set(layout, "entry_info", "Password do not matched.");
 		dlog_print(DLOG_ERROR, LOG_TAG, "Password not matched");
 		return;
 	}
+		delete_object_data();
 
         ad->zone_password = security_password_setup_data;
 
@@ -179,6 +205,22 @@ static void security_password_entry_unfocused_cb(void *data, Evas_Object *obj, v
 	*password = strdup(elm_entry_entry_get(obj));
 }
 
+static void security_password_entry_changed_cb(void *data, Evas_Object *obj, void *event_info)
+{
+	Evas_Object *button;
+	const char *entry_data = elm_entry_entry_get(obj);
+
+	if (security_passphrase_mode < PASSPHRASE_STATE_VERIFY)
+		button = (Evas_Object *)evas_object_data_get(ud.nf, "setup_button");
+	else
+		button = (Evas_Object *)evas_object_data_get(ud.nf, "verify_button");
+
+	if (strlen(entry_data) > 1)
+		elm_object_disabled_set(button, EINA_FALSE);
+	else
+		elm_object_disabled_set(button, EINA_TRUE);
+}
+
 static Evas_Object *security_password_setup_content_get(void *data, Evas_Object *obj, const char *part)
 {
 	if (!strcmp(part, "elm.swallow.content")) {
@@ -190,6 +232,15 @@ static Evas_Object *security_password_setup_content_get(void *data, Evas_Object 
 		elm_object_part_text_set(layout, "title", "Enter password");
 		elm_object_part_content_set(layout, "entry", entry);
 		evas_object_smart_callback_add(entry, "unfocused", security_password_entry_unfocused_cb, data);
+		evas_object_smart_callback_add(entry, "changed", security_password_entry_changed_cb, NULL);
+		elm_entry_input_panel_return_key_disabled_set(entry, EINA_TRUE);
+
+		if (security_passphrase_mode < PASSPHRASE_STATE_VERIFY)
+			evas_object_data_set(ud.nf, "setup_entry", entry);
+		else
+			evas_object_data_set(ud.nf, "verify_entry", entry);
+
+		evas_object_data_set(ud.nf, "layout", layout);
 
 		return layout;
 	}
@@ -213,16 +264,18 @@ static void create_password_setup_view(appdata_s *ad)
 
 	left_button = _create_button(layout, PREV_BUTTON, security_previous_view_cb, NULL);
 	right_button = _create_button(layout, NEXT_BUTTON, security_password_setup_cb, ad);
+	elm_object_disabled_set(right_button, EINA_TRUE);
 
-	//elm_object_disabled_set(right_button, EINA_TRUE);
 	_create_two_button_layout(layout, left_button, right_button);
 
 	if (security_passphrase_mode == 1) {
 		entry = &security_password_setup_data;
 		title = "Setup Password";
+		evas_object_data_set(ud.nf, "setup_button", right_button);
 	} else {
 		entry = &security_password_verify_data;
 		title = "Verify Password";
+		evas_object_data_set(ud.nf, "verify_button", right_button);
 	}
 
 	itc = _create_genlist_item_class("full", NULL, security_password_setup_content_get);
@@ -230,6 +283,7 @@ static void create_password_setup_view(appdata_s *ad)
 
 	item = elm_naviframe_item_push(ud.nf, title, NULL, NULL, layout, NULL);
 	elm_naviframe_item_title_enabled_set(item, EINA_TRUE, EINA_TRUE);
+	elm_naviframe_item_pop_cb_set(item, password_pop_cb, NULL);
 }
 
 void _create_security_view(appdata_s *ad)
