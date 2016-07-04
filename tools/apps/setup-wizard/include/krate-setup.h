@@ -37,10 +37,10 @@
 #ifdef  LOG_TAG
 #undef  LOG_TAG
 #endif
-#define LOG_TAG "zone-setup-wizard"
+#define LOG_TAG "krate-setup-wizard"
 
 #if !defined(PACKAGE)
-#define PACKAGE "org.tizen.zone-setup-wizard"
+#define PACKAGE "org.tizen.krate-setup-wizard"
 #endif
 
 #define KEYGUARD_PACKAGE "org.tizen.keyguard"

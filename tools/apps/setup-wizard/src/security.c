@@ -17,7 +17,7 @@
  *
  */
 
-#include "zone-setup.h"
+#include "krate-setup.h"
 #include "widget.h"
 
 #define PASSPHRASE_STATE_UNDEFINED	0

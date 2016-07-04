@@ -17,9 +17,9 @@
  *
  */
 #include <notification.h>
-#include "zone-setup.h"
+#include "krate-setup.h"
 
-#define ZONE_METADATA_PATH "data/ZoneManifest.xml"
+#define ZONE_METADATA_PATH "data/KrateManifest.xml"
 
 static char *__get_zone_metadata(void)
 {

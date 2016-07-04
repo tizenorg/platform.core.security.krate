@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
-#include "zone-setup.h"
+#include "krate-setup.h"
 #include "widget.h"
 
 static void __create_welcome_view(appdata_s *ad);
@@ -111,7 +111,7 @@ void _create_base_window(appdata_s *ad)
 		dlog_print(DLOG_ERROR, LOG_TAG, "failed get resource path");
 		ui_app_exit();
 	}
-	snprintf(edj_path, PATH_MAX, "%s%s", res_path, "org.tizen.zone-setup-wizard.edj");
+	snprintf(edj_path, PATH_MAX, "%s%s", res_path, "org.tizen.krate-setup-wizard.edj");
 
 	ud.edj_path = strdup(edj_path);
 	free(res_path);

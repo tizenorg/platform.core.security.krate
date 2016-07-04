@@ -16,7 +16,7 @@
  * limitations under the License.
  *
  */
-#include "zone-setup.h"
+#include "krate-setup.h"
 #include "widget.h"
 
 static void __launch_zone_app(zone_manager_h zone_mgr, const char* zone_name, app_control_h app_control)
