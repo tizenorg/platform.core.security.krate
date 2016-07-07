@@ -50,4 +50,9 @@
 #define PREV_BUTTON "Previous"
 #define REMOVE_BUTTON "Remove"
 
+#define OK_BUTTON "OK"
+#define SETUP_POPUP_HEADER "Setup Wizard"
+#define BODY_ZONE_CREATE_ERROR "Failed to create the Separated Zone."
+#define BODY_ZONE_REMOVE_ERROR "Failed to remove the Separated Zone."
+
 #endif /*__SETUP_TEXT_H__*/
