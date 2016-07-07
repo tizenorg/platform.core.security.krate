@@ -52,6 +52,7 @@ typedef struct {
 
 void _create_kaskit_window();
 void _set_kaskit_window_title(const char *title);
+void _set_kaskit_window_exit_cb();
 
 void _create_app_icon(const char* pkg_id, const char* app_id, const char* label, const char* icon, bool removable);
 void _destroy_app_icon(const char* pkg_id);

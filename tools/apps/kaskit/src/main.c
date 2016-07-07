@@ -127,6 +127,7 @@ static void __create_icon_thread(void* data, Ecore_Thread* thread) {
 	if (data != NULL) {
 		free(data);
 	}
+	_set_kaskit_window_exit_cb();
 }
 
 static void __pkg_event_cb(const char* type,

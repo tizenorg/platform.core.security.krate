@@ -97,15 +97,19 @@ void _create_kaskit_window()
 	ud.conform = _create_conformant(ud.win);
 	ud.layout = _create_layout(ud.conform, ud.edj_path, "main_window");
 	elm_object_content_set(ud.conform, ud.layout);
-	eext_object_event_callback_add(ud.win, EEXT_CALLBACK_BACK, __back_key_cb, NULL);
-
-	elm_object_signal_callback_add(ud.layout, "bg_clicked", "layout", __block_clicked_cb, NULL);
 
 	__set_kaskit_layout();
 
 	evas_object_show(ud.win);
 
 	return;
+}
+
+void _set_kaskit_window_exit_cb()
+{
+	eext_object_event_callback_add(ud.win, EEXT_CALLBACK_BACK, __back_key_cb, NULL);
+
+	elm_object_signal_callback_add(ud.layout, "bg_clicked", "layout", __block_clicked_cb, NULL);
 }
 
 static Eina_Bool __app_icon_long_press_cb(void *data)
