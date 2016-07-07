@@ -19,7 +19,7 @@
 #include "krate-setup.h"
 #include "widget.h"
 
-static void __launch_zone_app(zone_manager_h zone_mgr, const char* zone_name, app_control_h app_control)
+static void __launch_zone_app(zone_manager_h zone_mgr, const char *zone_name, app_control_h app_control)
 {
 	zone_app_proxy_h zone_app;
 
@@ -34,6 +34,10 @@ static void __zone_request_done(const char *from, const char *info, void *user_d
 	char uri[PATH_MAX];
 
 	appdata_s *ad = (appdata_s *) user_data;
+	if (!strcmp(info, "Error")) {
+		ecore_main_loop_thread_safe_call_sync(zone_request_fail, ad);
+		return;
+	}
 
 	if (!strcmp(ad->mode, "create")) {
 		zone_manager_reset_zone_password(ad->zone_manager, ad->zone_name, ad->zone_password);

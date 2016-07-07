@@ -16,7 +16,6 @@
  * limitations under the License.
  *
  */
-
 #include "widget.h"
 
 static void __win_delete_request_cb(void *data , Evas_Object *obj , void *event_info)
@@ -30,7 +29,9 @@ Evas_Object *_create_win(const char *package)
 
         elm_app_base_scale_set(1.8);
 
-	win = elm_win_util_standard_add(package, package);
+	win = elm_win_add(NULL, package, ELM_WIN_BASIC);
+	elm_win_indicator_mode_set(win, ELM_WIN_INDICATOR_SHOW);
+
         elm_win_conformant_set(win, EINA_TRUE);
         elm_win_autodel_set(win, EINA_TRUE);
         elm_win_alpha_set(win, EINA_TRUE);
@@ -157,4 +158,17 @@ Evas_Object *_create_entry(Evas_Object *parent)
 
 	evas_object_show(entry);
 	return entry;
+}
+
+Evas_Object *_create_popup(Evas_Object *parent, const char *title, const char *body)
+{
+	Evas_Object *popup = elm_popup_add(parent);
+
+	evas_object_size_hint_weight_set(popup, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+	elm_object_style_set(popup, "default");
+	elm_object_part_text_set(popup, "title,text", title);
+	elm_object_item_part_text_translatable_set(popup, "title,text", EINA_TRUE);
+	elm_object_text_set(popup, body);
+
+	return popup;
 }

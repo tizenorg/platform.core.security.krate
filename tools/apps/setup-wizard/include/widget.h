@@ -32,6 +32,7 @@ Evas_Object *_create_button(Evas_Object *parent, const char *text, Evas_Smart_Cb
 Evas_Object *_create_textblock(Evas_Object *parent, const char *text, char *style);
 Evas_Object *_create_progressbar(Evas_Object *parent, const char *style);
 Evas_Object *_create_entry(Evas_Object *parent);
+Evas_Object *_create_popup(Evas_Object *parent, const char *title, const char *body);
 
 Elm_Genlist_Item_Class *_create_genlist_item_class(char *style, Elm_Genlist_Item_Text_Get_Cb text_func, Elm_Genlist_Item_Content_Get_Cb content_func);
 Elm_Object_Item *_append_genlist_item(Evas_Object *genlist, Elm_Genlist_Item_Class *itc, Elm_Object_Select_Mode select_mode, void* data);
