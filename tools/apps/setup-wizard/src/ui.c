@@ -33,7 +33,7 @@ static Eina_Bool __naviframe_pop_cb(void *data, Elm_Object_Item *it)
 	return EINA_FALSE;
 }
 
-static void __welcome_cancel_cb(void *data, Evas_Object *obj, void *event_info)
+static void setup_wizard_cancel_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	appdata_s *ad = (appdata_s *)data;
 
@@ -43,15 +43,18 @@ static void __welcome_cancel_cb(void *data, Evas_Object *obj, void *event_info)
 	return;
 }
 
-static void __welcome_next_cb(void *data, Evas_Object *obj, void *event_info)
+static void setup_wizard_next_cb(void *data, Evas_Object *obj, void *event_info)
 {
 	appdata_s *ad = (appdata_s *)data;
 
 	if (!strcmp(ad->mode, "create")) {
 		_create_security_view(ad);
 	} else {
-		if (_send_zone_remove_request(ad) != 0)
+		if (_send_zone_remove_request(ad) != 0) {
+			//zone_request_fail(ad);
 			ui_app_exit();
+			return;
+		}
 		_create_setup_view(ad);
 	}
 
@@ -94,9 +97,30 @@ static Eina_Bool __progressbar_timer_cb(void *data)
 	return ECORE_CALLBACK_RENEW;
 }
 
+void zone_request_fail(appdata_s *ad)
+{
+	Evas_Object *popup = NULL;
+
+	ecore_timer_del(ud.timer);
+
+	if (!strcmp(ad->mode, "create"))
+		popup = _create_popup(ud.win, SETUP_POPUP_HEADER, BODY_ZONE_CREATE_ERROR);
+	else
+		popup = _create_popup(ud.win, SETUP_POPUP_HEADER, BODY_ZONE_REMOVE_ERROR);
+
+	Evas_Object *btn = elm_button_add(popup);
+	elm_object_text_set(btn, OK_BUTTON);
+	elm_object_style_set(btn, "popup");
+	evas_object_smart_callback_add(btn, "clicked", setup_wizard_cancel_cb, ad);
+	elm_object_part_content_set(popup, "button1", btn);
+
+	evas_object_show(popup);
+
+	return;
+}
+
 void _create_base_window(appdata_s *ad)
 {
-	Evas_Object *win;
 	Evas_Object *layout;
 
 	char edj_path[PATH_MAX] = "\0";
@@ -117,8 +141,8 @@ void _create_base_window(appdata_s *ad)
 	free(res_path);
 
 	/* Create main UI widget */
-	win = _create_win(PACKAGE);
-	ud.conform = _create_conformant(win);
+	ud.win = _create_win(PACKAGE);
+	ud.conform = _create_conformant(ud.win);
 	layout = _create_layout(ud.conform, NULL, NULL);
 	elm_object_content_set(ud.conform, layout);
 	ud.nf = elm_naviframe_add(layout);
@@ -130,7 +154,7 @@ void _create_base_window(appdata_s *ad)
 	elm_object_part_content_set(layout, "elm.swallow.content", ud.nf);
 	eext_object_event_callback_add(ud.nf, EEXT_CALLBACK_BACK, eext_naviframe_back_cb, NULL);
 
-	evas_object_show(win);
+	evas_object_show(ud.win);
 	return;
 }
 
@@ -165,8 +189,8 @@ static void __create_welcome_view(appdata_s *ad)
 
 	elm_object_part_content_set(layout, "content_layout", welcome_layout);
 
-	left_button = _create_button(layout, text[2], __welcome_cancel_cb, ad);
-	right_button = _create_button(layout, text[3], __welcome_next_cb, ad);
+	left_button = _create_button(layout, text[2], setup_wizard_cancel_cb, ad);
+	right_button = _create_button(layout, text[3], setup_wizard_next_cb, ad);
 
 	_create_two_button_layout(layout, left_button, right_button);
 
@@ -213,7 +237,7 @@ void _create_setup_view(appdata_s *ad)
 	elm_naviframe_item_title_enabled_set(nf_it, EINA_FALSE, EINA_TRUE);
 
 	/* set progressbar timer callback */
-	ecore_timer_add(0.1, __progressbar_timer_cb, ad);
+	ud.timer = ecore_timer_add(0.1, __progressbar_timer_cb, ad);
 
 	return;
 }
