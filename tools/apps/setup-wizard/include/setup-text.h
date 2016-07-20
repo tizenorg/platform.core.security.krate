@@ -26,11 +26,11 @@
 #define SUB_TITLE_STYLE_W "DEFAULT='font=Tizen:style=Regular font_size=40 color=#000000 wrap=mixed align=center'"
 #define SUB_CONTENT_STYLE_W "DEFAULT='font=Tizen:style=Regular font_size=34 color=#000000 wrap=mixed align=center'"
 
-#define WELCOME_MESSAGE_TITLE "Welcome"
-#define WELCOME_MESSAGE_CONTENT "Use your applications separately<br>with SZ.<br>The folder will be created on your<br>personal home screen."
+#define CREATE_MESSAGE_TITLE "Welcome"
+#define CREATE_MESSAGE_CONTENT "Use your applications separately<br>with SZ.<br>The folder will be created on your<br>personal home screen."
 
-#define DELETE_MESSAGE_TITLE "Deletion"
-#define DELETE_MESSAGE_CONTENT "The folder will be removed from<br> your personal home screen."
+#define REMOVE_MESSAGE_TITLE "Deletion"
+#define REMOVE_MESSAGE_CONTENT "The folder will be removed from<br> your personal home screen."
 
 #define SETUP_MESSAGE_TITLE "Creating Folder instance..."
 #define SETUP_MESSAGE_CONTENT "The folder will be created on your<br>presonal home screen."
@@ -54,5 +54,22 @@
 #define SETUP_POPUP_HEADER "Setup Wizard"
 #define BODY_ZONE_CREATE_ERROR "Failed to create the Separated Zone."
 #define BODY_ZONE_REMOVE_ERROR "Failed to remove the Separated Zone."
+
+#define SECURITY_GROUP_SECURITY_OPTIONS "Security options"
+#define SECURITY_GROUP_UNLOCK_METHOD "Unlock method"
+
+#define SECURITY_PASSWORD "Password"
+#define SECURITY_SIMPLE_PASSWORD "PIN"
+
+#define SECURITY_UNLOCK_METHOD_INFO_TEXT "Select a Krate unlock method and a timeout option."
+#define SECURITY_TIMEOUT_TEXT "Security Timeout"
+#define SECURITY_TIMEOUT_SUB_TEXT "After %d minuates of inactivity"
+
+#define SECURITY_PASSWORD_DO_NOT_MATCHED "Password do not matched."
+#define SECURITY_ENTER_PASSWORD "Enter password"
+
+#define SECURITY_SETUP_VIEW_TITLE "Krate Security"
+#define SECURITY_PASSWORD_SETUP_VIEW_TITLE "Setup Password"
+#define SECURITY_PASSWORD_VERIFY_VIEW_TITLE "Verify Password"
 
 #endif /*__SETUP_TEXT_H__*/
