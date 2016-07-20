@@ -20,24 +20,6 @@
 #ifndef __SETUP_TEXT_H__
 #define __SETUP_TEXT_H__
 
-#define SUB_TITLE_STYLE_B "DEFAULT='font=Tizen:style=Regular font_size=40 color=#ffffff wrap=mixed align=center'"
-#define SUB_CONTENT_STYLE_B "DEFAULT='font=Tizen:style=Regular font_size=34 color=#ffffff wrap=mixed align=center'"
-
-#define SUB_TITLE_STYLE_W "DEFAULT='font=Tizen:style=Regular font_size=40 color=#000000 wrap=mixed align=center'"
-#define SUB_CONTENT_STYLE_W "DEFAULT='font=Tizen:style=Regular font_size=34 color=#000000 wrap=mixed align=center'"
-
-#define WELCOME_MESSAGE_TITLE "Welcome"
-#define WELCOME_MESSAGE_CONTENT "Use your applications separately<br>with SZ.<br>The folder will be created on your<br>personal home screen."
-
-#define DELETE_MESSAGE_TITLE "Deletion"
-#define DELETE_MESSAGE_CONTENT "The folder will be removed from<br> your personal home screen."
-
-#define SETUP_MESSAGE_TITLE "Creating Folder instance..."
-#define SETUP_MESSAGE_CONTENT "The folder will be created on your<br>presonal home screen."
-
-#define DELETE_ONGOING_TITLE "Deleting a folder..."
-#define DELETE_ONGOING_CONTENT "The folder will be removed from<br> your personal home screen."
-
 #define NOTI_CREATE_ZONE "Separated zone creation"
 #define NOTI_BODY_CREATE_ZONE "Tap heare to create Separated Zone."
 
@@ -54,5 +36,12 @@
 #define SETUP_POPUP_HEADER "Setup Wizard"
 #define BODY_ZONE_CREATE_ERROR "Failed to create the Separated Zone."
 #define BODY_ZONE_REMOVE_ERROR "Failed to remove the Separated Zone."
+
+#define SECURITY_PASSWORD_DO_NOT_MATCHED "Password do not matched."
+#define SECURITY_ENTER_PASSWORD "Enter password"
+
+#define SECURITY_SETUP_VIEW_TITLE "Krate Security"
+#define SECURITY_PASSWORD_SETUP_VIEW_TITLE "Setup Password"
+#define SECURITY_PASSWORD_VERIFY_VIEW_TITLE "Verify Password"
 
 #endif /*__SETUP_TEXT_H__*/
