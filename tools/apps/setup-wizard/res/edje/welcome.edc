@@ -17,17 +17,24 @@
  *
  */
 group { name: "welcome_layout";
+	inherit: "base_layout";
 	images {
 		image: "../images/icon.png" COMP;
 		image: "../images/theme_bg.png" COMP;
+	}
+	styles {
+		style {
+			name: "sub_content_w";
+			base: "font=Tizen:style=Regular font_size=24 color=#ffffff wrap=mixed align=center";
+		}
 	}
 	parts {
 		part { name: "bg";
 			type: IMAGE;
 			scale: 1;
 			description { state: "default" 0.0;
-				rel1 { relative: 0.0 0.0; }
-				rel2 { relative: 1.0 1.0; }
+				rel1 { relative: 0.0 0.0; to: "content_layout";}
+				rel2 { relative: 1.0 1.0; to: "content_layout";}
 				image.normal: "../images/theme_bg.png";
 			}
 		}
@@ -38,8 +45,8 @@ group { name: "welcome_layout";
 			description { state: "default" 0.0;
 				color: 255 255 255 255;
 				color3: 85 88 88 255;
-				rel1 { relative: 0.0 0.0; to: "bg"; offset: 22 150;}
-				rel2 { relative: 1.0 0.0; to: "bg"; offset: -22 300;}
+				rel1 { relative: 0.0 0.1; to: "bg"; offset: 22 80;}
+				rel2 { relative: 1.0 0.2; to: "bg"; offset: -22 0;}
 				text { font: "Tizen:style=Regular"; size: "48"; align: 0.5 0.5; text: "Separated Zone";}
 			}
 		}
@@ -47,8 +54,8 @@ group { name: "welcome_layout";
 			type: RECT;
 			scale: 1;
 			description { state: "default" 0.0;
-				rel1 { relative: 0.0 1.0; to_x: "bg"; to_y: "title"; offset: 0 80;}
-				rel2 { relative: 1.0 1.0; to_x: "bg"; to_y: "title"; offset: 0 350;}
+				rel1 { relative: 0.0 0.3; to: "bg"; offset: 0 0;}
+				rel2 { relative: 1.0 0.6; to: "bg"; offset: 0 0;}
 				visible: 0;
 			}
 		}
@@ -67,25 +74,29 @@ group { name: "welcome_layout";
 			type: RECT;
 			scale: 1;
 			description { state: "default" 0.0;
-				rel1 { relative: 0.0 1.0; to: "icon_base"; }
-				rel2 { relative: 1.0 1.0; to: "icon_base"; offset: 0 80;}
+				rel1 { relative: 0.0 0.6; to: "bg"; }
+				rel2 { relative: 1.0 0.6; to: "bg"; offset: 0 20;}
 				visible: 0;
 			}
 		}
 		part { name: "message_title";
-			type: SWALLOW;
+			type: TEXT;
 			scale: 1;
 			description { state: "default" 0.0;
-				rel1 { relative: 0.0 1.0; to: "top_padding";}
-				rel2 { relative: 1.0 1.0; to: "top_padding"; offset: 0 50;}
+				color: 255 255 255 255;
+				rel1 { relative: 0.0 1.0; to: "top_padding"; offset: 22 0;}
+				rel2 { relative: 1.0 1.0; to: "top_padding"; offset: -22 20;}
+				text { font: "Tizen:style=Regular"; size: 30; align: 0.5 0.5;}
 			}
 		}
 		part { name: "message_content";
-			type: SWALLOW;
+			type: TEXTBLOCK;
 			scale: 1;
 			description { state: "default" 0.0;
-				rel1 { relative: 0.0 1.0; to: "message_title"; offset: 0 22;}
-				rel2 { relative: 1.0 1.0; to: "bg";}
+				rel1 { relative: 0.0 1.0; to: "message_title"; offset: 0 40;}
+				rel2 { relative: 1.0 1.0; to: "bg"; offset: -22 0;}
+				align: 0.5 0.0;
+				text { style: "sub_content_w"; min: 1 1; max:1 1;}
 			}
 		}
 	}
