@@ -36,7 +36,7 @@ struct security_lock_type security_lock_types[2] = {
 	{ "PIN", 1 }
 };
 
-char* security_group_text[2] = {
+const char* security_group_text[2] = {
 	"Unlock method",
 	"Security options"
 };
@@ -278,7 +278,7 @@ static void create_password_setup_view(appdata_s *ad)
 		evas_object_data_set(ud.nf, "verify_button", right_button);
 	}
 
-	itc = _create_genlist_item_class("full", NULL, security_password_setup_content_get);
+	itc = _create_genlist_item_class((char*)"full", NULL, security_password_setup_content_get);
 	item = _append_genlist_item(genlist, itc, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY, (void **)entry);
 
 	item = elm_naviframe_item_push(ud.nf, title, NULL, NULL, layout, NULL);
@@ -301,13 +301,13 @@ void _create_security_view(appdata_s *ad)
 	elm_layout_content_set(layout, "content_layout", genlist);
 	elm_genlist_mode_set(genlist, ELM_LIST_COMPRESS);
 
-	itc = _create_genlist_item_class("multiline", security_multiline_text_get, NULL);
+	itc = _create_genlist_item_class((char *)"multiline", security_multiline_text_get, NULL);
 	_append_genlist_item(genlist, itc, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY, NULL);
 
-	itc =  _create_genlist_item_class("group_index", security_group_text_get, NULL);
-	_append_genlist_item(genlist, itc, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY, security_group_text[0]);
+	itc =  _create_genlist_item_class((char *)"group_index", security_group_text_get, NULL);
+	_append_genlist_item(genlist, itc, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY, (void *)security_group_text[0]);
 
-	itc = _create_genlist_item_class("one_icon", security_lock_type_text_get, security_lock_type_content_get);
+	itc = _create_genlist_item_class((char *)"one_icon", security_lock_type_text_get, security_lock_type_content_get);
 	for (index = 0; index < 2; index++) {
 		item = elm_genlist_item_append(genlist,
 									   itc,
@@ -322,10 +322,10 @@ void _create_security_view(appdata_s *ad)
 	}
 
 	/* Timeout list group*/
-	itc = _create_genlist_item_class("group_index", security_group_text_get, NULL);
-	_append_genlist_item(genlist, itc, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY, security_group_text[1]);
+	itc = _create_genlist_item_class((char *)"group_index", security_group_text_get, NULL);
+	_append_genlist_item(genlist, itc, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY, (void *)security_group_text[1]);
 
-	itc = _create_genlist_item_class("double_label", security_double_label_text_get, NULL);
+	itc = _create_genlist_item_class((char *)"double_label", security_double_label_text_get, NULL);
 	item = _append_genlist_item(genlist, itc, ELM_OBJECT_SELECT_MODE_DISPLAY_ONLY, NULL);
 	elm_object_item_disabled_set(item, EINA_TRUE); /* [TBD] enable timeout options */
 

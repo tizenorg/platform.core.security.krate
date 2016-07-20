@@ -19,6 +19,21 @@
 #include "krate-setup.h"
 #include "widget.h"
 
+#include "window.h"
+#include "layout.h"
+
+class WelcomePage : public Window {
+public:
+	bool createPartContents(Layout* layout)
+	{
+		return true;
+	}
+
+private:
+	Layout *layout;
+};
+
+#if 0
 static void __create_welcome_view(appdata_s *ad);
 
 uidata_s ud = {0, };
@@ -238,3 +253,4 @@ void _create_setup_view(appdata_s *ad)
 
 	return;
 }
+#endif

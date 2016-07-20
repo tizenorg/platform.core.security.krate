@@ -19,6 +19,11 @@
 #include "krate-setup.h"
 #include "widget.h"
 
+#include "debug.h"
+#include "application.h"
+#include "shell.h"
+
+#if 0
 static void __launch_zone_app(zone_manager_h zone_mgr, const char *zone_name, app_control_h app_control)
 {
 	zone_app_proxy_h zone_app;
@@ -152,23 +157,38 @@ static void __app_control(app_control_h app_control, void *data)
 
 	return;
 }
+#endif
 
-int main(int argc, char *argv[])
-{
-	appdata_s ad = {0, };
-	int ret = 0;
+#include "welcome.h"
 
-	ui_app_lifecycle_callback_s event_callback = {0, };
+class SetupWizard : public Application {
+public:
+	bool onCreate()
+	{
+		dlog_print(DLOG_ERROR, KLAY_LOG_TAG, "SetupWizard::onCreate()\n");
+		Display::setBaseScale(1.0);
+		mainframe = new SetupWizardMainFrame();
+		mainframe->show();
+		return true;
+	}
 
-	event_callback.create = __app_create;
-	event_callback.terminate = __app_terminate;
-	event_callback.pause = __app_pause;
-	event_callback.resume = __app_resume;
-	event_callback.app_control = __app_control;
+	void onSuspend()
+	{
+		dlog_print(DLOG_ERROR, KLAY_LOG_TAG, "SetupWizard::onSuspend()\n");
+	}
 
-	ret = ui_app_main(argc, argv, &event_callback, &ad);
-	if (ret != APP_ERROR_NONE)
-		dlog_print(DLOG_ERROR, LOG_TAG, "ui_app_main is failed. err = %d", ret);
+	void onTerminate()
+	{
+		dlog_print(DLOG_ERROR, KLAY_LOG_TAG, "SetupWizard::onTerminate()\n");
+	}
 
-	return ret;
-}
+	void onResume()
+	{
+		dlog_print(DLOG_ERROR, KLAY_LOG_TAG, "SetupWizard::onResume()\n");
+	}
+
+private:
+	SetupWizardMainFrame* mainframe;
+};
+
+SetupWizard setupWizard;

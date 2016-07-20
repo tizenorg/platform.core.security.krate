@@ -50,7 +50,7 @@ static char *__get_zone_metadata(void)
 			return NULL;
 		}
 
-		metadata = malloc(fsize + 1);
+		metadata = (char *)malloc(fsize + 1);
 		if (metadata == NULL) {
 			dlog_print(DLOG_ERROR, LOG_TAG, "failed to allocate memory");
 			fclose(fp);
@@ -116,7 +116,7 @@ static int __set_notification(notification_h noti_handle, app_control_h app_cont
 {
 	int ret = 0;
         char *mode = NULL;
-        char *noti_text[2][2] = {
+        const char *noti_text[2][2] = {
                 {NOTI_CREATE_ZONE, NOTI_BODY_CREATE_ZONE},
                 {NOTI_REMOVE_ZONE, NOTI_BODY_REMOVE_ZONE}
         };
@@ -126,9 +126,9 @@ static int __set_notification(notification_h noti_handle, app_control_h app_cont
                 return -1;
 
         if (!strcmp(mode, "create"))
-                text = noti_text[0];
+                text = (char **)noti_text[0];
         else
-                text = noti_text[1];
+                text = (char **)noti_text[1];
 
         ret = notification_set_text(noti_handle, NOTIFICATION_TEXT_TYPE_TITLE, text[0], NULL, NOTIFICATION_VARIABLE_TYPE_NONE);
         if (ret != NOTIFICATION_ERROR_NONE)
