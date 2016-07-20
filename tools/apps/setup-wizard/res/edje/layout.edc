@@ -43,6 +43,22 @@ group { name: "base_layout";
 				rel2 { relative: 1.0 1.0; to: "base";}
 			}
 		}
+		part { name: "prev_button";
+			type: SWALLOW;
+			scale: 0;
+			description { state: "default" 0.0;
+				rel1 {relative: 0.0 0.0; to: "bottom_layout"; offset: 22 22;}
+				rel2 {relative: 0.5 1.0; to: "bottom_layout"; offset: -22 -22;}
+			}
+		}
+		part { name: "next_button";
+			type: SWALLOW;
+			scale: 0;
+			description { state: "default" 0.0;
+				rel1 {relative: 1.0 0.0; to_x: "prev_button"; to_y: "bottom_layout"; offset: 22 22;}
+				rel2 {relative: 1.0 1.0; to: "bottom_layout"; offset: -22 -22;}
+			}
+		}				
 	}
 }
 
