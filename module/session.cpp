@@ -13,60 +13,59 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License
  */
-
-#include <stdio.h>
+#include <errno.h>
 #include <unistd.h>
+#include <string.h>
+#include <signal.h>
 #include <sys/stat.h>
 #include <sys/file.h>
-#include <string.h>
-#include <errno.h>
-#include <signal.h>
 
 #include "session.h"
-#include "exception.h"
-#include "filesystem.h"
+
+#include <klay/exception.h>
+#include <klay/filesystem.h>
 
 bool isValidSessionLeader(pid_t pid)
 {
-    runtime::File proc("/proc/" + std::to_string(pid));
-    return proc.exists();
+	runtime::File proc("/proc/" + std::to_string(pid));
+	return proc.exists();
 }
 
 void createSession(const runtime::User& user, const SessionBuilder& sessionBuilder)
 {
-    runtime::File file("/var/run/zone/" + user.getName());
-    if (file.exists()) {
-        if (isValidSessionLeader(getSessionLeader(user))) {
-            throw runtime::Exception("Session already opened");
-        }
-        file.remove();
-    } else {
-        file.makeBaseDirectory();
-    }
+	runtime::File file("/var/run/krate/" + user.getName());
+	if (file.exists()) {
+		if (isValidSessionLeader(getSessionLeader(user))) {
+			throw runtime::Exception("Session already opened");
+		}
+		file.remove();
+	} else {
+		file.makeBaseDirectory();
+	}
 
-    sessionBuilder(user);
+	sessionBuilder(user);
 
-    file.create(0600);
-    file.lock();
-    file.chown(user.getUid(), user.getGid());
-    pid_t pid = ::getpid();
-    file.write(&pid, sizeof(pid_t));
-    file.unlock();
+	file.create(0600);
+	file.lock();
+	file.chown(user.getUid(), user.getGid());
+	pid_t pid = ::getpid();
+	file.write(&pid, sizeof(pid_t));
+	file.unlock();
 }
 
 pid_t getSessionLeader(const runtime::User& user)
 {
-    runtime::File file("/var/run/zone/" + user.getName(), O_RDONLY);
-    file.lock();
-    pid_t pid = -1;
-    file.read(&pid, sizeof(pid_t));
-    file.unlock();
+	runtime::File file("/var/run/krate/" + user.getName(), O_RDONLY);
+	file.lock();
+	pid_t pid = -1;
+	file.read(&pid, sizeof(pid_t));
+	file.unlock();
 
-    return pid;
+	return pid;
 }
 
 void destroySession(const runtime::User& user)
 {
-    std::string path = "/var/run/zone/" + user.getName();
-    ::unlink(path.c_str());
+	std::string path = "/var/run/krate/" + user.getName();
+	::unlink(path.c_str());
 }

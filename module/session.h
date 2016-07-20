@@ -14,16 +14,16 @@
  *  limitations under the License
  */
 
-#ifndef __ZONE_SESSION_ENV_H__
-#define __ZONE_SESSION_ENV_H__
+#ifndef __KRATE_SESSION_ENV_H__
+#define __KRATE_SESSION_ENV_H__
 
-#include <sys/types.h>
 #include <unistd.h>
+#include <sys/types.h>
 
 #include <string>
 #include <functional>
 
-#include "auth/user.h"
+#include <klay/auth/user.h>
 
 typedef std::function<void(const runtime::User& user)> SessionBuilder;
 
@@ -32,4 +32,4 @@ void createSession(const runtime::User& user, const SessionBuilder& sessionBuild
 pid_t getSessionLeader(const runtime::User& user);
 void destroySession(const runtime::User& user);
 
-#endif //!__ZONE_SESSION_ENV_H__
+#endif //!__KRATE_SESSION_ENV_H__
