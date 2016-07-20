@@ -7,8 +7,8 @@ Summary: Tizen Krate Manager
 Group:   Security/Other
 BuildRequires: gcc
 BuildRequires: cmake
-BuildRequires: pam-devel
 BuildRequires: gettext-tools
+BuildRequires: pkgconfig(klay)
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(libxml-2.0)
 BuildRequires: pkgconfig(bundle)
@@ -32,10 +32,16 @@ krates.
 %files
 %manifest krate.manifest
 %defattr(644,root,root,755)
-#%attr(700,root,root) %{_sbindir}/zone-volume-manager
+%attr(700,root,root) %{_sbindir}/zone-volume-manager
 #%attr(755,root,root) %{_bindir}/krate
 %{_unitdir}/krate.service
 #%{_unitdir}/multi-user.target.wants/krate.service
+%attr(700,root,root) /etc/gumd/useradd.d/20_krate-add.post
+%attr(700,root,root) /etc/gumd/userdel.d/20_krate-remove.post
+%attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/indicator_icon.png
+%attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/notification_sub_icon.png
+%attr(700,root,root) %dir %{TZ_SYS_ETC}/krate
+%attr(600,root,root) %config %{TZ_SYS_ETC}/krate/owner.xml
 
 %prep
 %setup -q
@@ -119,11 +125,14 @@ developing the krate client program.
 %{_includedir}/krate
 %{_libdir}/pkgconfig/krate.pc
 
+%endif
+
 ## PAM Plugin Package ########################################################
 %package -n dpm-pam-krate
 Summary: PAM Plugin for zone policy in device policy manager
 Group: Development/Libraries
 Requires: systemd
+BuildRequires: pam-devel
 
 %description -n dpm-pam-krate
 PAM Plugin for zone policy in device policy manager and CLI tool
@@ -139,16 +148,8 @@ mv /etc/pam.d/systemd-user.keep /etc/pam.d/systemd-user
 %manifest krate.manifest
 %defattr(600,root,root,700)
 %attr(700,root,root) %{_libdir}/security/pam_*.so
-%attr(700,root,root) %{_sbindir}/krate-admin-cli
-%attr(700,root,root) %dir %{TZ_SYS_ETC}/krate
-%attr(600,root,root) %config %{TZ_SYS_ETC}/krate/owner.xml
-%attr(700,root,root) /etc/gumd/useradd.d/20_pam-krate-add.post
-%attr(700,root,root) /etc/gumd/userdel.d/20_pam-krate-remove.post
-%attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/indicator_icon.png
-%attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/noti_list_sub_icon.png
+#%attr(700,root,root) %{_sbindir}/zone-admin-cli
 %config /etc/pam.d/*
-
-%endif
 
 ## Begin of mobile feature ###################################################
 %if "%{profile}" == "mobile"

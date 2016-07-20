@@ -14,29 +14,30 @@
 # limitations under the License.
 #
 
-PROJECT(krate-admin-cli)
-
-FILE(GLOB KRATE_ADMIN_CLI_SRCS  krate-admin-cli.cpp
-                                ${KRATE_MODULE}/session.cpp
-                                ${KRATE_MODULE}/zone-builder.cpp
+FILE(GLOB CLI_SRCS	krate-admin-cli.cpp
+					${KRATE_MODULE}/session.cpp
+					${KRATE_MODULE}/krate-builder.cpp
 )
 
-SET(KRATE_ADMIN_CLI_NAME "zone-admin-cli")
+SET(CLI_NAME "zone-admin-cli")
 
-ADD_EXECUTABLE(${ZONE_CLI_NAME} ${ZONE_CLI_SRCS})
-SET_TARGET_PROPERTIES(${ZONE_CLI_NAME} PROPERTIES PREFIX ""
-    COMPILE_DEFINITIONS PID_FILE_PATH="${RUN_INSTALL_DIR}/zone"
-    COMPILE_FLAGS "-fPIE"
-    LINK_FLAGS "-pie"
+ADD_EXECUTABLE(${CLI_NAME} ${CLI_SRCS})
+SET_TARGET_PROPERTIES(${CLI_NAME} PROPERTIES PREFIX ""
+	COMPILE_DEFINITIONS PID_FILE_PATH="${RUN_DIR}/krate"
+	COMPILE_FLAGS "-fPIE"
+	LINK_FLAGS "-pie"
 )
 
-PKG_CHECK_MODULES(ZONE_CLI_DEPS  REQUIRED
-                                 glib-2.0
-                                 capi-appfw-package-manager
-                                 capi-appfw-app-manager
+PKG_CHECK_MODULES(CLI_DEPS	REQUIRED
+							klay
+							glib-2.0
+							libxml-2.0
+							capi-appfw-package-manager
+							capi-appfw-app-manager
+							zone
 )
 
-INCLUDE_DIRECTORIES(SYSTEM ${ZONE_CLI_DEPS_INCLUDE_DIRS} ${DPM_COMMON} ${ZONE_MODULE} ${ZONE_LIBS})
-TARGET_LINK_LIBRARIES(${ZONE_CLI_NAME} ${ZONE_CLI_DEPS_LIBRARIES} dpm-common zone)
+INCLUDE_DIRECTORIES(SYSTEM ${CLI_DEPS_INCLUDE_DIRS} ${KRATE_MODULE})
+TARGET_LINK_LIBRARIES(${CLI_NAME} ${CLI_DEPS_LIBRARIES})
 
-INSTALL(TARGETS ${ZONE_CLI_NAME} DESTINATION sbin)
+INSTALL(TARGETS ${CLI_NAME} DESTINATION sbin)

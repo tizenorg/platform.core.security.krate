@@ -13,34 +13,33 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License
  */
-
- #ifndef __ZONE_BUILDER_H__
- #define __ZONE_BUILDER_H__
+#ifndef __KRATE_BUILDER_H__
+#define __KRATE_BUILDER_H__
 
 #include <string>
 #include <vector>
 #include <memory>
 
-#include "xml/parser.h"
-#include "xml/document.h"
-#include "auth/user.h"
+#include <klay/xml/parser.h>
+#include <klay/xml/document.h>
+#include <klay/auth/user.h>
 
-class ZoneBuilder {
+class KrateBuilder {
 public:
-    ZoneBuilder(const runtime::User& user, const std::string& manifestPath);
-    virtual ~ZoneBuilder();
+	KrateBuilder(const runtime::User& user, const std::string& manifestPath);
+	virtual ~KrateBuilder();
 
-    void containerize(bool create = true);
+	void containerize(bool create = true);
 
 protected:
-    void bindFilesystemNode(const std::string& source, const std::string& target,
-                            const std::string& type, const std::string& options,
-                            bool create = true);
+	void bindFilesystemNode(const std::string& source, const std::string& target,
+							const std::string& type, const std::string& options,
+							bool create = true);
 private:
-    std::string name;
-    uid_t uid;
-    gid_t gid;
-    std::unique_ptr<xml::Document> manifest;
+	std::string name;
+	uid_t uid;
+	gid_t gid;
+	std::unique_ptr<xml::Document> manifest;
 };
 
- #endif //!__ZONE_BUILDER_H__
+#endif //!__KRATE_BUILDER_H__
