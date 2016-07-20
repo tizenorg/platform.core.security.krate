@@ -14,22 +14,22 @@
  *  limitations under the License
  */
 
-#ifndef __KRATE_SESSION_ENV_H__
-#define __KRATE_SESSION_ENV_H__
+#ifndef __KEY_MANAGER_H__
+#define __KEY_MANAGER_H__
 
-#include <unistd.h>
-#include <sys/types.h>
+class KeyManager {
+public:
+	KeyManager() = delete;
+	KeyManager(const KeyManager&) = delete;
+	KeyManager(KeyManager&&) = delete;
 
-#include <string>
-#include <functional>
+	KeyManager& operator=(const KeyManager&) = delete;
+	KeyManager& operator=(KeyManager&&) = delete;
 
-#include <klay/auth/user.h>
+	static bool isKeyExist(const std::string& keyName);
+	static void addKey(const std::string& keyName, const std::string& data);
+	static std::string getKey(const std::string& keyName);
+	static void removeKey(const std::string& keyName);
+};
 
-typedef std::function<void(const runtime::User& user)> SessionBuilder;
-
-bool isValidSessionLeader(pid_t pid);
-void createSession(const runtime::User& user, const SessionBuilder& sessionBuilder);
-pid_t getSessionLeader(const runtime::User& user);
-void destroySession(const runtime::User& user);
-
-#endif //!__KRATE_SESSION_ENV_H__
+#endif //!__KEY_MANAGER_H__*/

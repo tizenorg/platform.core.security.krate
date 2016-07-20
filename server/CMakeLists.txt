@@ -19,3 +19,10 @@ SET(TARGET ${PROJECT_NAME})
 CONFIGURE_FILE(systemd/krate.service.in systemd/krate.service)
 
 INSTALL(FILES systemd/krate.service DESTINATION ${SYSTEMD_UNIT_DIR})
+
+INSTALL(FILES ${KRATE_TOOLS}/gumd-scripts/20_krate-add.post DESTINATION /etc/gumd/useradd.d)
+INSTALL(FILES ${KRATE_TOOLS}/gumd-scripts/20_krate-remove.post DESTINATION /etc/gumd/userdel.d)
+
+INSTALL(FILES ${KRATE_DATA}/DefaultManifest.xml DESTINATION ${CONF_DIR} RENAME owner.xml)
+INSTALL(FILES ${KRATE_DATA}/indicator_icon.png DESTINATION ${APP_ICON_DIR_PREFIX}/krate)
+INSTALL(FILES ${KRATE_DATA}/notification_sub_icon.png DESTINATION ${APP_ICON_DIR_PREFIX}/krate)

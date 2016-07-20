@@ -13,9 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+SET(VOLUME_MANAGER_SRCS	key-manager.cpp
+						key-generator.cpp
+						kernel-keyring.cpp
+						main.cpp
+)
 
-SET(KRATE_APPS  ${KRATE_TOOLS}/apps)
-#SET(KRATE_CLI  ${KRATE_TOOLS}/cli)
+PKG_CHECK_MODULES(VOLUME_MANAGER_DEPS	REQUIRED
+										klay
+										key-manager
+)
 
-ADD_SUBDIRECTORY(${KRATE_APPS})
-#ADD_SUBDIRECTORY(${KRATE_CLI})
+INCLUDE_DIRECTORIES(SYSTEM ${VOLUME_MANAGER_DEPS_INCLUDE_DIRS})
+
+ADD_EXECUTABLE(${PROJECT_NAME}-volume-manager ${VOLUME_MANAGER_SRCS})
+
+TARGET_LINK_LIBRARIES(${PROJECT_NAME}-volume-manager ${VOLUME_MANAGER_DEPS_LIBRARIES})
+
+INSTALL(TARGETS ${PROJECT_NAME}-volume-manager DESTINATION sbin)
