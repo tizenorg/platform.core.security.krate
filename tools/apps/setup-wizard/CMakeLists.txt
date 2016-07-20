@@ -12,11 +12,15 @@ PKG_CHECK_MODULES(SETUP_WIZARD REQUIRED
 INCLUDE_DIRECTORIES(${EFL_APP_INCLUDE_DIRS} ${SETUP_WIZARD_INCLUDE_DIRS})
 LINK_DIRECTORIES(${EFL_APP_LIBRARY_DIRS} ${SETUP_WIZARD_LIBRARY_DIRS})
 
-SET(PACKAGE_SRC src/main.c
-            src/ui.c
-            src/security.c
-            src/util.c
-            src/widget.c)
+SET(PACKAGE_SRC src/main.cpp
+            src/ui.cpp
+            src/util.cpp
+            src/widget.cpp
+			src/application.cpp
+			src/window.cpp
+			src/layout.cpp
+			src/shell.cpp
+		)
 
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIE")
 SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pie")
