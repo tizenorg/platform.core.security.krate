@@ -2,14 +2,22 @@ group { name: "setup_layout";
 	images {
 		image: "../images/icon.png" COMP;
 	}
+	styles {
+		style { name: "sub_title_b";
+			base: "font=Tizen:style=Regular font_size=30 color=#000000 wrap=mixed align=center";
+		}
+		style { name: "sub_content_b";
+			base: "font=Tizen:style=Regular font_size=24 color=#000000 wrap=mixed align=center";
+		}
+	}
 	parts {
 		part { name: "bg";
 			type: RECT;
 			scale: 1;
 			description { state: "default" 0.0;
 				color: 228 228 228 255;
-				rel1 { relative: 0.0 0.0; }
-				rel2 { relative: 1.0 1.0; }
+				rel1 { relative: 0.0 0.0;}
+				rel2 { relative: 1.0 1.0;}
 			}
 		}
 		part { name: "title";
@@ -17,8 +25,8 @@ group { name: "setup_layout";
 			scale: 1;
 			description { state: "default" 0.0;
 				color: 0 0 0 255;
-				rel1 { relative: 0.0 0.0; to: "bg"; offset: 22 150;}
-				rel2 { relative: 1.0 0.0; to: "bg"; offset: -22 300;}
+				rel1 { relative: 0.0 0.1; to: "bg"; offset: 22 80;}
+				rel2 { relative: 1.0 0.2; to: "bg"; offset: -22 0;}
 				text { font: "Tizen:style=Regular"; size: "48"; align: 0.5 0.5; text: "Separated Zone";}
 			}
 		}
@@ -26,8 +34,8 @@ group { name: "setup_layout";
 			type: RECT;
 			scale: 1;
 			description { state: "default" 0.0;
-				rel1 { relative: 0.0 1.0; to_x: "bg"; to_y: "title"; offset: 0 80;}
-				rel2 { relative: 1.0 1.0; to_x: "bg"; to_y: "title"; offset: 0 350;}
+				rel1 { relative: 0.0 0.3; to: "bg"; offset: 0 0;}
+				rel2 { relative: 1.0 0.5; to: "bg"; offset: 0 0;}
 				visible: 0;
 			}
 		}
@@ -43,30 +51,32 @@ group { name: "setup_layout";
 			}
 		}
 		part { name: "progressbar_msg";
-			type: SWALLOW;
+			type: TEXTBLOCK;
 			scale: 1;
 			description { state: "default" 0.0;
-				rel1 { relative: 0.0 1.0; to_x: "bg"; to_y: "icon_base"; offset: 22 50;}
-				rel2 { relative: 1.0 1.0; to_x: "bg"; to_y: "icon_base"; offset: -22 150;}
+				rel1 { relative: 0.0 0.5; to: "bg"; offset: 22 50;}
+				rel2 { relative: 1.0 0.5; to: "bg"; offset: -22 100;}
+				text { style: "sub_title_b"; min: 1 1; max: 1 1;}
 			}
 		}
 		part { name: "progressbar";
 			type: SWALLOW;
 			scale: 1;
 			description { state: "default" 0.0;
-				rel1 { relative: 0.0 1.0; to_x: "bg"; to_y: "progressbar_msg"; offset: 22 22;}
-				rel2 { relative: 1.0 1.0; to_x: "bg"; to_y: "progressbar_msg"; offset: -22 52;}
+				rel1 { relative: 0.0 0.6; to: "bg"; offset: 22 22;}
+				rel2 { relative: 1.0 0.6; to: "bg"; offset: -22 50;}
 			}
 		}
 		part { name: "content_text";
-			type: SWALLOW;
+			type: TEXTBLOCK;
 			scale: 1;
 			description { state: "default" 0.0;
-				rel1 { relative: 0.0 1.0; to_x: "bg"; to_y: "progressbar"; offset: 22 0;}
-				rel2 { relative: 1.0 1.0; to: "bg"; offset: -22 0;}
+				rel1 { relative: 0.0 0.7; to: "bg"; offset: 22 0;}
+				rel2 { relative: 1.0 0.7; to: "bg"; offset: -22 40;}
+				text { style: "sub_content_b"; min:1 1; max:1 1;}
 			}
 		}
-		part { name: "bottom_pending";
+		part { name: "bottom_padding";
 			type: SPACER;
 			description { state: "default" 0.0;
 				rel1 { relative: 0.0 1.0; to: "bg"; offset: 0 -162;}
