@@ -26,11 +26,11 @@
 #define SUB_TITLE_STYLE_W "DEFAULT='font=Tizen:style=Regular font_size=40 color=#000000 wrap=mixed align=center'"
 #define SUB_CONTENT_STYLE_W "DEFAULT='font=Tizen:style=Regular font_size=34 color=#000000 wrap=mixed align=center'"
 
-#define WELCOME_MESSAGE_TITLE "Welcome"
-#define WELCOME_MESSAGE_CONTENT "Use your applications separately<br>with SZ.<br>The folder will be created on your<br>personal home screen."
+#define CREATE_MESSAGE_TITLE "Welcome"
+#define CREATE_MESSAGE_CONTENT "Use your applications separately<br>with SZ.<br>The folder will be created on your<br>personal home screen."
 
-#define DELETE_MESSAGE_TITLE "Deletion"
-#define DELETE_MESSAGE_CONTENT "The folder will be removed from<br> your personal home screen."
+#define REMOVE_MESSAGE_TITLE "Deletion"
+#define REMOVE_MESSAGE_CONTENT "The folder will be removed from<br> your personal home screen."
 
 #define SETUP_MESSAGE_TITLE "Creating Folder instance..."
 #define SETUP_MESSAGE_CONTENT "The folder will be created on your<br>presonal home screen."
