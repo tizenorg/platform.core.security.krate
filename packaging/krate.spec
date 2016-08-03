@@ -12,18 +12,21 @@ BuildRequires: gettext-tools
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(libxml-2.0)
 BuildRequires: pkgconfig(bundle)
+BuildRequires: pkgconfig(sqlite3)
 BuildRequires: pkgconfig(pkgmgr)
 BuildRequires: pkgconfig(pkgmgr-info)
 BuildRequires: pkgconfig(aul)
 BuildRequires: pkgconfig(appsvc)
 BuildRequires: pkgconfig(libtzplatform-config)
-BuildRequires: pkgconfig(security-privilege-manager)
-BuildRequires: pkgconfig(capi-base-common)
-BuildRequires: pkgconfig(capi-system-info)
-BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(notification)
 BuildRequires: pkgconfig(key-manager)
 BuildRequires: pkgconfig(auth-fw-admin)
+BuildRequires: pkgconfig(capi-system-system-settings)
+BuildRequires: pkgconfig(notification)
+BuildRequires: pkgconfig(libgum)
+BuildRequires:  pkgconfig(cynara-client)
+BuildRequires:  pkgconfig(cynara-session)
+
 
 %description
 The krate package provides a daemon which is responsible for managing each of

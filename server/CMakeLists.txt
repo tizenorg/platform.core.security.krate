@@ -16,6 +16,51 @@
 
 SET(TARGET ${PROJECT_NAME})
 
+SET(FOUNDATION		main.cpp
+					server.cpp
+					app-bundle.cpp
+					launchpad.cpp
+					packman.cpp
+					zone.cpp
+					app-proxy.cpp
+					package-proxy.cpp
+)
+
+SET(DEPENDENCY		glib-2.0
+					gio-2.0
+					bundle
+					aul
+					appsvc
+					pkgmgr
+					pkgmgr-info
+					libtzplatform-config
+					capi-system-system-settings
+					notification
+					libgum
+					cynara-client
+					cynara-session
+					auth-fw-admin
+)
+
+ADD_EXECUTABLE(${TARGET} ${FOUNDATION})
+
+PKG_CHECK_MODULES(SERVER_DEPS REQUIRED ${DEPENDENCY})
+
+INCLUDE_DIRECTORIES(SYSTEM ${SERVER_DEPS_INCLUDE_DIRS} ${KRATE_COMMON} ${KRATE_SERVER})
+
+TARGET_LINK_LIBRARIES(${TARGET} ${SERVER_DEPS_LIBRARIES} pthread krate-common)
+
+SET_TARGET_PROPERTIES(${TARGET} PROPERTIES COMPILE_FLAGS "-fPIE")
+SET_TARGET_PROPERTIES(${TARGET} PROPERTIES LINK_FLAGS "-pie")
+
+TARGET_COMPILE_DEFINITIONS(${TARGET} PRIVATE
+	CONF_PATH="${CONF_INSTALL_DIR}"
+	DATA_PATH="${DATA_INSTALL_DIR}"
+	RUN_PATH="${RUN_INSTALL_DIR}"
+	DB_PATH="${DB_INSTALL_DIR}"
+)
+
 CONFIGURE_FILE(systemd/krate.service.in systemd/krate.service)
 
-INSTALL(FILES systemd/krate.service DESTINATION ${SYSTEMD_UNIT_DIR})
+INSTALL(TARGETS ${TARGET} DESTINATION bin)
+INSTALL(FILES systemd/krate.service DESTINATION ${SYSTEMD_UNIT_INSTALL_DIR})
