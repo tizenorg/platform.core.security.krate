@@ -13,8 +13,52 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
 SET(TARGET ${PROJECT_NAME})
+
+SET(FOUNDATION	main.cpp
+				server.cpp
+				packman.cpp
+				launchpad.cpp
+				app-bundle.cpp
+				manager.cpp
+				app-proxy.cpp
+				package-proxy.cpp
+)
+
+SET(DEPENDENCY	klay
+				glib-2.0
+				gio-2.0
+				libxml-2.0
+				bundle
+				aul
+				appsvc
+				pkgmgr
+				pkgmgr-info
+				libtzplatform-config
+				capi-system-system-settings
+				notification
+				libgum
+				cynara-client
+				cynara-session
+				auth-fw-admin
+)
+
+ADD_EXECUTABLE(${TARGET} ${FOUNDATION})
+
+PKG_CHECK_MODULES(SERVER_DEPS REQUIRED ${DEPENDENCY})
+
+INCLUDE_DIRECTORIES(SYSTEM ${SERVER_DEPS_INCLUDE_DIRS} ${KRATE_SERVER} ${PROJECT_SOURCE_DIR})
+
+TARGET_LINK_LIBRARIES(${TARGET} ${SERVER_DEPS_LIBRARIES} pthread)
+
+SET_TARGET_PROPERTIES(${TARGET} PROPERTIES COMPILE_FLAGS "-fPIE")
+SET_TARGET_PROPERTIES(${TARGET} PROPERTIES LINK_FLAGS "-pie")
+
+TARGET_COMPILE_DEFINITIONS(${TARGET} PRIVATE
+	CONF_PATH="${CONF_DIR}"
+	RUN_PATH="${RUN_DIR}"
+	ICON_PATH="${ICON_DIR}"
+)
 
 CONFIGURE_FILE(systemd/krate.service.in systemd/krate.service)
 
@@ -24,5 +68,5 @@ INSTALL(FILES ${KRATE_TOOLS}/gumd-scripts/20_krate-add.post DESTINATION /etc/gum
 INSTALL(FILES ${KRATE_TOOLS}/gumd-scripts/20_krate-remove.post DESTINATION /etc/gumd/userdel.d)
 
 INSTALL(FILES ${KRATE_DATA}/DefaultManifest.xml DESTINATION ${CONF_DIR} RENAME owner.xml)
-INSTALL(FILES ${KRATE_DATA}/indicator_icon.png DESTINATION ${APP_ICON_DIR_PREFIX}/krate)
-INSTALL(FILES ${KRATE_DATA}/notification_sub_icon.png DESTINATION ${APP_ICON_DIR_PREFIX}/krate)
+INSTALL(FILES ${KRATE_DATA}/indicator_icon.png DESTINATION ${ICON_DIR})
+INSTALL(FILES ${KRATE_DATA}/notification_sub_icon.png DESTINATION ${ICON_DIR})

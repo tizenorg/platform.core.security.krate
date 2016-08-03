@@ -1,11 +1,14 @@
 [Unit]
-Description=Krate
+Description=Krate Manager
 
 [Service]
 Type=simple
+SmackProcessLabel=System
 ExecStart=${TZ_SYS_BIN}/krate
 Restart=on-failure
 ExecReload=/bin/kill -HUP $MAINPID
+CapabilityBoundingSet=~CAP_MAC_ADMIN
+CapabilityBoundingSet=~CAP_MAC_OVERRIDE
 
 [Install]
 WantedBy=multi-user.target

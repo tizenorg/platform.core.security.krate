@@ -17,13 +17,13 @@ BuildRequires: pkgconfig(pkgmgr-info)
 BuildRequires: pkgconfig(aul)
 BuildRequires: pkgconfig(appsvc)
 BuildRequires: pkgconfig(libtzplatform-config)
-BuildRequires: pkgconfig(security-privilege-manager)
-BuildRequires: pkgconfig(capi-base-common)
-BuildRequires: pkgconfig(capi-system-info)
 BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(notification)
 BuildRequires: pkgconfig(key-manager)
 BuildRequires: pkgconfig(auth-fw-admin)
+BuildRequires: pkgconfig(cynara-client)
+BuildRequires: pkgconfig(cynara-session)
+BuildRequires: pkgconfig(libgum)
 
 %description
 The krate package provides a daemon which is responsible for managing each of
@@ -32,10 +32,10 @@ krates.
 %files
 %manifest krate.manifest
 %defattr(644,root,root,755)
-#%attr(755,root,root) %{_bindir}/krate
+%attr(755,root,root) %{_bindir}/krate
 %attr(700,root,root) %{_sbindir}/krate-volume-manager
 %{_unitdir}/krate.service
-#%{_unitdir}/multi-user.target.wants/krate.service
+%{_unitdir}/multi-user.target.wants/krate.service
 %attr(700,root,root) /etc/gumd/useradd.d/20_krate-add.post
 %attr(700,root,root) /etc/gumd/userdel.d/20_krate-remove.post
 %attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/indicator_icon.png
@@ -65,16 +65,16 @@ krates.
          -DSYSTEMD_UNIT_DIR=%{_unitdir} \
          -DPAMD_DIR=/etc/pam.d \
          -DCONF_DIR=%{TZ_SYS_ETC}/krate \
+         -DICON_DIR="%{TZ_SYS_RO_ICONS}/krate" \
          -DAPP_INSTALL_PREFIX="%{TZ_SYS_RO_APP}" \
-         -DAPP_ICON_DIR_PREFIX="%{TZ_SYS_RO_ICONS}" \
          -DAPP_SHARE_PACKAGES_DIR="%{TZ_SYS_RO_PACKAGES}"
 
 make %{?jobs:-j%jobs}
 
 %install
 %make_install
-#mkdir -p %{buildroot}/%{_unitdir}/multi-user.target.wants
-#ln -s ../krate.service %{buildroot}/%{_unitdir}/multi-user.target.wants/krate.service
+mkdir -p %{buildroot}/%{_unitdir}/multi-user.target.wants
+ln -s ../krate.service %{buildroot}/%{_unitdir}/multi-user.target.wants/krate.service
 
 %clean
 rm -rf %{buildroot}
