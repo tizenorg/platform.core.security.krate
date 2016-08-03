@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Setup-Wizard application
+ * Tizen Krate Setup-Wizard application
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
@@ -19,39 +19,39 @@
 #include "krate-setup.h"
 #include "widget.h"
 
-static void __launch_zone_app(zone_manager_h zone_mgr, const char *zone_name, app_control_h app_control)
+static void __launch_krate_app(krate_manager_h krate_mgr, const char *krate_name, app_control_h app_control)
 {
-	zone_app_proxy_h zone_app;
+	krate_app_proxy_h krate_app;
 
-	zone_app_proxy_create(zone_mgr, zone_name, &zone_app);
-	zone_app_proxy_send_launch_request(zone_app, app_control);
-	zone_app_proxy_destroy(zone_app);
+	krate_app_proxy_create(krate_mgr, krate_name, &krate_app);
+	krate_app_proxy_send_launch_request(krate_app, app_control);
+	krate_app_proxy_destroy(krate_app);
 }
 
-static void __zone_request_done(const char *from, const char *info, void *user_data)
+static void __krate_request_done(const char *from, const char *info, void *user_data)
 {
 	app_control_h app_control;
 	char uri[PATH_MAX];
 
 	appdata_s *ad = (appdata_s *) user_data;
 	if (!strcmp(info, "Error")) {
-		ecore_main_loop_thread_safe_call_sync(zone_request_fail, ad);
+		ecore_main_loop_thread_safe_call_sync(krate_request_fail, ad);
 		return;
 	}
 
 	if (!strcmp(ad->mode, "create")) {
-		zone_manager_reset_zone_password(ad->zone_manager, ad->zone_name, ad->zone_password);
+		krate_manager_reset_krate_password(ad->krate_manager, ad->krate_name, ad->krate_password);
 
 		app_control_create(&app_control);
 		app_control_set_app_id(app_control, KEYGUARD_PACKAGE);
-		snprintf(uri, sizeof(uri), "zone://setup/%s", ad->zone_name);
+		snprintf(uri, sizeof(uri), "krate://setup/%s", ad->krate_name);
 		app_control_set_uri(app_control, uri);
 		app_control_send_launch_request(app_control, NULL, NULL);
 		app_control_destroy(app_control);
 
 		app_control_create(&app_control);
 		app_control_set_app_id(app_control, KASKIT_PACKAGE);
-		__launch_zone_app(ad->zone_manager, ad->zone_name, app_control);
+		__launch_krate_app(ad->krate_manager, ad->krate_name, app_control);
 		app_control_destroy(app_control);
 	}
 
@@ -62,8 +62,8 @@ static bool __app_create(void *data)
 {
 	appdata_s *ad = (appdata_s *) data;
 
-	if (zone_manager_create(&ad->zone_manager) != ZONE_ERROR_NONE) {
-		dlog_print(DLOG_ERROR, LOG_TAG, "failed to get zone manager handle");
+	if (krate_manager_create(&ad->krate_manager) != KRATE_ERROR_NONE) {
+		dlog_print(DLOG_ERROR, LOG_TAG, "failed to get krate manager handle");
 		ui_app_exit();
 		return false;
 	}
@@ -81,7 +81,7 @@ static void __app_resume(void *data)
 
 static void __free_data(appdata_s *ad)
 {
-	free(ad->zone_name);
+	free(ad->krate_name);
 	free(ad->mode);
 }
 
@@ -89,15 +89,15 @@ static void __app_terminate(void *data)
 {
 	appdata_s *ad = (appdata_s *) data;
 
-	zone_manager_remove_event_cb(ad->zone_manager, ad->zone_event_cb_id);
-	zone_manager_destroy(ad->zone_manager);
+	krate_manager_remove_event_cb(ad->krate_manager, ad->krate_event_cb_id);
+	krate_manager_destroy(ad->krate_manager);
 
 	__free_data(ad);
 
 	return ;
 }
 
-static void __set_zone_callback(appdata_s *ad)
+static void __set_krate_callback(appdata_s *ad)
 {
 	char *cb_event_list[2] = {"created", "removed"};
 	char *cb_event = NULL;
@@ -107,8 +107,8 @@ static void __set_zone_callback(appdata_s *ad)
 	else
 		cb_event = cb_event_list[1];
 
-	if (zone_manager_add_event_cb(ad->zone_manager, cb_event, __zone_request_done, ad, &ad->zone_event_cb_id) != ZONE_ERROR_NONE) {
-		dlog_print(DLOG_ERROR, LOG_TAG, "Failed to add zone signal callback");
+	if (krate_manager_add_event_cb(ad->krate_manager, cb_event, __krate_request_done, ad, &ad->krate_event_cb_id) != KRATE_ERROR_NONE) {
+		dlog_print(DLOG_ERROR, LOG_TAG, "Failed to add krate signal callback");
 		ui_app_exit();
 	}
 
@@ -133,14 +133,14 @@ static void __app_control(app_control_h app_control, void *data)
 		return;
 	}
 
-	ret = app_control_get_extra_data(app_control, "zone", &ad->zone_name);
+	ret = app_control_get_extra_data(app_control, "krate", &ad->krate_name);
 	if (ret != APP_CONTROL_ERROR_NONE) {
-		dlog_print(DLOG_ERROR, LOG_TAG, "failed to get zone name");
+		dlog_print(DLOG_ERROR, LOG_TAG, "failed to get krate name");
 		ui_app_exit();
 		return;
 	}
 
-	__set_zone_callback(ad);
+	__set_krate_callback(ad);
 
 	if (app_control_clone(&ad->app_control, app_control) != APP_CONTROL_ERROR_NONE) {
 		dlog_print(DLOG_ERROR, LOG_TAG, "Failed to clone app control handler");

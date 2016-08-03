@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Keyguard application
+ * Tizen Krate Keyguard application
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
@@ -60,24 +60,24 @@ unsigned int _get_left_attempts()
 	return max_attempt - attempt;
 }
 
-static void __launch_zone_app(const char* zone_name, app_control_h app_control)
+static void __launch_krate_app(const char* krate_name, app_control_h app_control)
 {
-	zone_manager_h zone_mgr;
-	zone_app_proxy_h zone_app;
+	krate_manager_h krate_mgr;
+	krate_app_proxy_h krate_app;
 
-	zone_manager_create(&zone_mgr);
-	zone_app_proxy_create(zone_mgr, zone_name, &zone_app);
-	zone_app_proxy_send_launch_request(zone_app, app_control);
-	zone_app_proxy_destroy(zone_app);
-	zone_manager_destroy(zone_mgr);
+	krate_manager_create(&krate_mgr);
+	krate_app_proxy_create(krate_mgr, krate_name, &krate_app);
+	krate_app_proxy_send_launch_request(krate_app, app_control);
+	krate_app_proxy_destroy(krate_app);
+	krate_manager_destroy(krate_mgr);
 }
 
-static void __add_shortcut(const char* zone_name)
+static void __add_shortcut(const char* krate_name)
 {
 	char uri[PATH_MAX];
 
-	snprintf(uri, sizeof(uri), "zone://enter/%s", zone_name);
-	shortcut_add_to_home(zone_name, LAUNCH_BY_URI, uri, "", 0, NULL, NULL);
+	snprintf(uri, sizeof(uri), "krate://enter/%s", krate_name);
+	shortcut_add_to_home(krate_name, LAUNCH_BY_URI, uri, "", 0, NULL, NULL);
 }
 
 static bool __app_create(void *data)
@@ -112,28 +112,28 @@ static void __app_control(app_control_h app_control, void *data)
 		return;
 	}
 
-	if (strncmp(uri, "zone://", sizeof("zone://") - 1) != 0) {
+	if (strncmp(uri, "krate://", sizeof("krate://") - 1) != 0) {
 		dlog_print(DLOG_ERROR, LOG_TAG, "Mismatched URI");
 		free(uri);
 		ui_app_exit();
 		return;
 	}
 
-	tmp = uri + sizeof("zone://") - 1;
+	tmp = uri + sizeof("krate://") - 1;
 
 	if (strncmp(tmp, "setup/", sizeof("setup/") - 1) == 0) {
-		char *zone_name;
+		char *krate_name;
 
-		zone_name = tmp + sizeof("setup/") - 1;
-		__add_shortcut(zone_name);
+		krate_name = tmp + sizeof("setup/") - 1;
+		__add_shortcut(krate_name);
 		ui_app_exit();
 		return;
 	} else if (strncmp(tmp, "enter/", sizeof("enter/") - 1) == 0) {
-		char* zone_name, *launch_parameter;
+		char* krate_name, *launch_parameter;
 		char new_uri[PATH_MAX];
 
-		zone_name = tmp + sizeof("enter/") - 1;
-		launch_parameter = strchr(zone_name, '/');
+		krate_name = tmp + sizeof("enter/") - 1;
+		launch_parameter = strchr(krate_name, '/');
 		if (launch_parameter != NULL) {
 			*(launch_parameter++) = '\0';
 			if (launch_parameter[0] == '\0') {
@@ -142,16 +142,15 @@ static void __app_control(app_control_h app_control, void *data)
 		} else {
 			launch_parameter = KASKIT_PACKAGE;
 		}
-		snprintf(new_uri, PATH_MAX, "zone://launch/%s", launch_parameter);
+		snprintf(new_uri, PATH_MAX, "krate://launch/%s", launch_parameter);
 		app_control_set_uri(app_control, new_uri);
 		app_control_set_app_id(app_control, PACKAGE);
 
-		dlog_print(DLOG_ERROR, LOG_TAG, "Wow");
 		dlog_print(DLOG_ERROR, LOG_TAG, PACKAGE);
 		dlog_print(DLOG_ERROR, LOG_TAG, new_uri);
-		dlog_print(DLOG_ERROR, LOG_TAG, zone_name);
+		dlog_print(DLOG_ERROR, LOG_TAG, krate_name);
 
-		__launch_zone_app(zone_name, app_control);
+		__launch_krate_app(krate_name, app_control);
 		ui_app_exit();
 		return;
 	}else if (strncmp(tmp, "launch/", sizeof("launch/") - 1) == 0) {

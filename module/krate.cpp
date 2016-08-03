@@ -30,11 +30,9 @@
 #include <klay/xml/parser.h>
 #include <klay/xml/document.h>
 
-#define KRATE_MANIFEST_DIR CONF_PATH "/krate/"
-
 std::string buildKrateManifestPath(const std::string& name)
 {
-	return KRATE_MANIFEST_DIR + name + ".xml";
+	return CONF_PATH "/" + name + ".xml";
 }
 
 std::string getKrateName(pam_handle_t* handle)

@@ -5,6 +5,8 @@ License: Apache-2.0
 Source0: file://%{name}-%{version}.tar.gz
 Summary: Tizen Krate Manager
 Group:   Security/Other
+Requires: systemd
+BuildRequires: pam-devel
 BuildRequires: gcc
 BuildRequires: cmake
 BuildRequires: gettext-tools
@@ -17,13 +19,13 @@ BuildRequires: pkgconfig(pkgmgr-info)
 BuildRequires: pkgconfig(aul)
 BuildRequires: pkgconfig(appsvc)
 BuildRequires: pkgconfig(libtzplatform-config)
-BuildRequires: pkgconfig(security-privilege-manager)
-BuildRequires: pkgconfig(capi-base-common)
-BuildRequires: pkgconfig(capi-system-info)
 BuildRequires: pkgconfig(capi-system-system-settings)
 BuildRequires: pkgconfig(notification)
 BuildRequires: pkgconfig(key-manager)
 BuildRequires: pkgconfig(auth-fw-admin)
+BuildRequires: pkgconfig(cynara-client)
+BuildRequires: pkgconfig(cynara-session)
+BuildRequires: pkgconfig(libgum)
 
 %description
 The krate package provides a daemon which is responsible for managing each of
@@ -32,16 +34,19 @@ krates.
 %files
 %manifest krate.manifest
 %defattr(644,root,root,755)
-#%attr(755,root,root) %{_bindir}/krate
+%attr(755,root,root) %{_bindir}/krated
 %attr(700,root,root) %{_sbindir}/krate-volume-manager
 %{_unitdir}/krate.service
-#%{_unitdir}/multi-user.target.wants/krate.service
+%{_unitdir}/multi-user.target.wants/krate.service
 %attr(700,root,root) /etc/gumd/useradd.d/20_krate-add.post
 %attr(700,root,root) /etc/gumd/userdel.d/20_krate-remove.post
 %attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/indicator_icon.png
 %attr(644,root,root) %{TZ_SYS_RO_ICONS}/krate/notification_sub_icon.png
 %attr(700,root,root) %dir %{TZ_SYS_ETC}/krate
 %attr(600,root,root) %config %{TZ_SYS_ETC}/krate/owner.xml
+%attr(700,root,root) %{_libdir}/security/pam_*.so
+%attr(700,root,root) %{_sbindir}/krate-admin-cli
+%config /etc/pam.d/*
 
 %prep
 %setup -q
@@ -65,16 +70,20 @@ krates.
          -DSYSTEMD_UNIT_DIR=%{_unitdir} \
          -DPAMD_DIR=/etc/pam.d \
          -DCONF_DIR=%{TZ_SYS_ETC}/krate \
+         -DICON_DIR="%{TZ_SYS_RO_ICONS}/krate" \
          -DAPP_INSTALL_PREFIX="%{TZ_SYS_RO_APP}" \
-         -DAPP_ICON_DIR_PREFIX="%{TZ_SYS_RO_ICONS}" \
          -DAPP_SHARE_PACKAGES_DIR="%{TZ_SYS_RO_PACKAGES}"
 
 make %{?jobs:-j%jobs}
 
 %install
 %make_install
-#mkdir -p %{buildroot}/%{_unitdir}/multi-user.target.wants
-#ln -s ../krate.service %{buildroot}/%{_unitdir}/multi-user.target.wants/krate.service
+mkdir -p %{buildroot}/%{_unitdir}/multi-user.target.wants
+ln -s ../krate.service %{buildroot}/%{_unitdir}/multi-user.target.wants/krate.service
+
+%post
+mv /etc/pam.d/systemd-user /etc/pam.d/systemd-user.keep
+cp /etc/pam.d/systemd-user-krate /etc/pam.d/systemd-user
 
 %clean
 rm -rf %{buildroot}
@@ -82,8 +91,8 @@ rm -rf %{buildroot}
 %preun
 
 %postun
+mv /etc/pam.d/systemd-user.keep /etc/pam.d/systemd-user
 
-%if 0
 ## Krate Client Package ########################################################
 %package -n libkrate
 Summary: Tizen Krate Client library
@@ -91,7 +100,7 @@ Group: Development/Libraries
 BuildRequires: pkgconfig(capi-appfw-application)
 BuildRequires: pkgconfig(capi-appfw-package-manager)
 BuildRequires: pkgconfig(libtzplatform-config)
-Requires: %{name} = %{version}-%{release}
+#Requires: %{name} = %{version}-%{release}
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 
@@ -125,48 +134,19 @@ developing the krate client program.
 %{_includedir}/krate
 %{_libdir}/pkgconfig/krate.pc
 
-%endif
-
-## PAM Plugin Package ########################################################
-%package -n dpm-pam-krate
-Summary: PAM Plugin for zone policy in device policy manager
-Group: Development/Libraries
-Requires: systemd
-BuildRequires: pam-devel
-
-%description -n dpm-pam-krate
-PAM Plugin for zone policy in device policy manager and CLI tool
-
-%post -n dpm-pam-krate
-mv /etc/pam.d/systemd-user /etc/pam.d/systemd-user.keep
-cp /etc/pam.d/systemd-user-zone /etc/pam.d/systemd-user
-
-%postun -n dpm-pam-krate
-mv /etc/pam.d/systemd-user.keep /etc/pam.d/systemd-user
-
-%files -n dpm-pam-krate
-%manifest krate.manifest
-%defattr(600,root,root,700)
-%attr(700,root,root) %{_libdir}/security/pam_*.so
-#%attr(700,root,root) %{_sbindir}/zone-admin-cli
-%config /etc/pam.d/*
-
-## Begin of mobile feature ###################################################
-%if "%{profile}" == "mobile"
-
 ## Krate Setup Wizard Package #################################################
 %package -n org.tizen.krate-setup-wizard
 Summary: Tizen Krate setup wizard Interface
 Group: Security/Other
+Requires: libkrate = %{version}-%{release}
 BuildRequires: pkgconfig(efl-extension)
 BuildRequires: pkgconfig(elementary)
 BuildRequires: pkgconfig(capi-appfw-application)
 BuildRequires: pkgconfig(evas)
 BuildRequires: pkgconfig(notification)
-BuildRequires: pkgconfig(zone)
 
 %description -n org.tizen.krate-setup-wizard
-Tizen Krate setup wizard interface for zone
+Tizen Krate setup wizard interface
 
 %define setup_home %{TZ_SYS_RO_APP}/org.tizen.krate-setup-wizard
 
@@ -205,6 +185,7 @@ Tizen Krate launcher interface
 %package -n org.tizen.keyguard
 Summary: Tizen Krate keyguard Interface
 Group: Security/Other
+Requires: libkrate = %{version}-%{release}
 BuildRequires: pkgconfig(efl-extension)
 BuildRequires: pkgconfig(elementary)
 BuildRequires: pkgconfig(capi-appfw-application)
@@ -224,5 +205,3 @@ Tizen Krate keyguard interface
 %{keyguard_home}/bin/*
 %{keyguard_home}/res/*
 %{TZ_SYS_RO_PACKAGES}/org.tizen.keyguard.xml
-
-%endif

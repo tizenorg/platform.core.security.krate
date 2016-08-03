@@ -44,8 +44,8 @@
 #include <klay/filesystem.h>
 #include <klay/auth/user.h>
 
-#include <zone/app-proxy.h>
-#include <zone/package-proxy.h>
+#include <krate/app-proxy.h>
+#include <krate/package-proxy.h>
 
 #include "session.h"
 
@@ -237,15 +237,15 @@ int showPkgInfo(const std::string& name)
 {
 	int num = 0;
 
-	zone_manager_h krateMgr;
-	zone_package_proxy_h pkgProxy;
+	krate_manager_h krateMgr;
+	krate_package_proxy_h pkgProxy;
 
-	zone_manager_create(&krateMgr);
-	zone_package_proxy_create(krateMgr, name.c_str(), &pkgProxy);
-	zone_package_proxy_foreach_package_info(pkgProxy, packgeListCallback, &num);
+	krate_manager_create(&krateMgr);
+	krate_package_proxy_create(krateMgr, name.c_str(), &pkgProxy);
+	krate_package_proxy_foreach_package_info(pkgProxy, packgeListCallback, &num);
 	std::cout << num << " packages are found" << std::endl;
-	zone_package_proxy_destroy(pkgProxy);
-	zone_manager_destroy(krateMgr);
+	krate_package_proxy_destroy(pkgProxy);
+	krate_manager_destroy(krateMgr);
 
 	return 0;
 }
@@ -295,15 +295,15 @@ int showAppInfo(const std::string& name)
 {
 	int num = 0;
 
-	zone_manager_h krateMgr;
-	zone_app_proxy_h appMgr;
+	krate_manager_h krateMgr;
+	krate_app_proxy_h appMgr;
 
-	zone_manager_create(&krateMgr);
-	zone_app_proxy_create(krateMgr, name.c_str(), &appMgr);
-	zone_app_proxy_foreach_app_info(appMgr, applicationListCallback, &num);
+	krate_manager_create(&krateMgr);
+	krate_app_proxy_create(krateMgr, name.c_str(), &appMgr);
+	krate_app_proxy_foreach_app_info(appMgr, applicationListCallback, &num);
 	std::cout << num << " applications are found" << std::endl;
-	zone_app_proxy_destroy(appMgr);
-	zone_manager_destroy(krateMgr);
+	krate_app_proxy_destroy(appMgr);
+	krate_manager_destroy(krateMgr);
 
 	return 0;
 }
@@ -326,12 +326,12 @@ void krateCallback(const char* name, const char* object, void *user_data)
 int monitorEvent()
 {
 	int krateCallbackId[2];
-	zone_manager_h krateMgr;
-	zone_manager_create(&krateMgr);
+	krate_manager_h krateMgr;
+	krate_manager_create(&krateMgr);
 
-	zone_manager_add_event_cb(krateMgr, "created", krateCallback,
+	krate_manager_add_event_cb(krateMgr, "created", krateCallback,
 								(void*)"created", &krateCallbackId[0]);
-	zone_manager_add_event_cb(krateMgr, "removed", krateCallback,
+	krate_manager_add_event_cb(krateMgr, "removed", krateCallback,
 								(void*)"removed", &krateCallbackId[1]);
 
 	std::cout << "=== Monitoring start ===" << std::endl << std::endl;
@@ -342,12 +342,12 @@ int monitorEvent()
 	g_main_loop_run(gmainloop);
 	g_main_loop_unref(gmainloop);
 
-	zone_manager_remove_event_cb(krateMgr, krateCallbackId[0]);
-	zone_manager_remove_event_cb(krateMgr, krateCallbackId[1]);
+	krate_manager_remove_event_cb(krateMgr, krateCallbackId[0]);
+	krate_manager_remove_event_cb(krateMgr, krateCallbackId[1]);
 
 	std::cout << "===  Monitoring end  ===" << std::endl;
 
-	zone_manager_destroy(krateMgr);
+	krate_manager_destroy(krateMgr);
 
 	return 0;
 }
@@ -398,13 +398,13 @@ void packageEventCallback(const char *type,
 
 int monitorPkgEvent(const std::string& name)
 {
-	zone_manager_h krateMgr;
-	zone_package_proxy_h pkgProxy;
+	krate_manager_h krateMgr;
+	krate_package_proxy_h pkgProxy;
 
-	zone_manager_create(&krateMgr);
-	zone_package_proxy_create(krateMgr, name.c_str(), &pkgProxy);
+	krate_manager_create(&krateMgr);
+	krate_package_proxy_create(krateMgr, name.c_str(), &pkgProxy);
 
-	zone_package_proxy_set_event_cb(pkgProxy, packageEventCallback, NULL);
+	krate_package_proxy_set_event_cb(pkgProxy, packageEventCallback, NULL);
 
 	std::cout << "=== Monitoring start ===" << std::endl << std::endl;
 
@@ -414,12 +414,12 @@ int monitorPkgEvent(const std::string& name)
 	g_main_loop_run(gmainloop);
 	g_main_loop_unref(gmainloop);
 
-	zone_package_proxy_unset_event_cb(pkgProxy);
+	krate_package_proxy_unset_event_cb(pkgProxy);
 
 	std::cout << "===  Monitoring end  ===" << std::endl;
 
-	zone_package_proxy_destroy(pkgProxy);
-	zone_manager_destroy(krateMgr);
+	krate_package_proxy_destroy(pkgProxy);
+	krate_manager_destroy(krateMgr);
 
 	return 0;
 }

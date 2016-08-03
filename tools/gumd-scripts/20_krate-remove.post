@@ -1,4 +1,4 @@
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 
 export `tzplatform-get TZ_SYS_ETC`
-rm ${TZ_SYS_ETC}/dpm/zone/${1}.xml
+rm ${TZ_SYS_ETC}/krate/${1}.xml

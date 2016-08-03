@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Keyguard application
+ * Tizen Krate Keyguard application
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
@@ -16,8 +16,8 @@
  * limitations under the License.
  *
  */
-#ifndef __ZONE_KEYGUARD_H__
-#define __ZONE_KEYGUARD_H__
+#ifndef __KRATE_KEYGUARD_H__
+#define __KRATE_KEYGUARD_H__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,8 +31,8 @@
 #include <efl_extension.h>
 #include <shortcut_manager.h>
 #include <auth-passwd.h>
-#include <zone/zone.h>
-#include <zone/app-proxy.h>
+#include <krate/krate.h>
+#include <krate/app-proxy.h>
 
 #ifdef  LOG_TAG
 #undef  LOG_TAG
@@ -53,4 +53,4 @@ bool _has_password(void);
 bool _check_password(const char* password);
 unsigned int _get_left_attempts(void);
 
-#endif /* __ZONE_KEYGUARD_H__ */
+#endif /* __KRATE_KEYGUARD_H__ */

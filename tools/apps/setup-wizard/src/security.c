@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Setup-Wizard application
+ * Tizen Krate Setup-Wizard application
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
@@ -189,9 +189,9 @@ static void security_password_setup_cb(void *data, Evas_Object *obj, void *event
 	}
 		delete_object_data();
 
-        ad->zone_password = security_password_setup_data;
+        ad->krate_password = security_password_setup_data;
 
-	if (_send_zone_create_request(ad) != 0) {
+	if (_send_krate_create_request(ad) != 0) {
 		ui_app_exit();
 	}
 

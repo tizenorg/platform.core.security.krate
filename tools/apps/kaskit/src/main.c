@@ -150,7 +150,7 @@ static void __badge_changed_cb(unsigned int action, const char *app_id, unsigned
 }
 
 
-static char* __get_current_zone_name() {
+static char* __get_current_krate_name() {
 	struct passwd pwd, *result;
 	int bufsize;
 
@@ -192,9 +192,9 @@ void _icon_uninstalled_cb(const char *pkg_id)
 
 static void __show_launcher()
 {
-	char *zone_name = __get_current_zone_name();
+	char *krate_name = __get_current_krate_name();
 
-	_set_kaskit_window_title(zone_name);
+	_set_kaskit_window_title(krate_name);
 
 	package_manager_set_event_status(__pkg_mgr,
 		PACKAGE_MANAGER_STATUS_TYPE_INSTALL |
@@ -205,7 +205,7 @@ static void __show_launcher()
 
 	ecore_thread_run(__create_icon_thread, NULL, NULL, NULL);
 
-	free(zone_name);
+	free(krate_name);
 }
 
 static bool __app_create(void *data)

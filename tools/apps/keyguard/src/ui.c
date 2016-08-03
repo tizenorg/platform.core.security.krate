@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Keyguard application
+ * Tizen Krate Keyguard application
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
