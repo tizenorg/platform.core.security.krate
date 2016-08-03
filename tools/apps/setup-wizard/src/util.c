@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Setup-Wizard application
+ * Tizen Krate Setup-Wizard application
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
@@ -19,9 +19,9 @@
 #include <notification.h>
 #include "krate-setup.h"
 
-#define ZONE_METADATA_PATH "data/KrateManifest.xml"
+#define KRATE_METADATA_PATH "data/KrateManifest.xml"
 
-static char *__get_zone_metadata(void)
+static char *__get_krate_metadata(void)
 {
 	FILE *fp = NULL;
 	char *res_path = NULL;
@@ -35,7 +35,7 @@ static char *__get_zone_metadata(void)
 		dlog_print(DLOG_ERROR, LOG_TAG, "failed to get resource path");
 		return NULL;
 	}
-	snprintf(metadata_path, PATH_MAX, "%s%s", res_path, ZONE_METADATA_PATH);
+	snprintf(metadata_path, PATH_MAX, "%s%s", res_path, KRATE_METADATA_PATH);
 	free(res_path);
 
 	fp = fopen(metadata_path, "r");
@@ -81,31 +81,31 @@ static char *__get_zone_metadata(void)
 	return metadata;
 }
 
-int _send_zone_create_request(appdata_s *ad)
+int _send_krate_create_request(appdata_s *ad)
 {
 	int ret;
 	char *metadata = NULL;
 
-	metadata = __get_zone_metadata();
+	metadata = __get_krate_metadata();
 	if (metadata == NULL) {
-		dlog_print(DLOG_ERROR, LOG_TAG, "Failed to get zone metadata");
+		dlog_print(DLOG_ERROR, LOG_TAG, "Failed to get krate metadata");
 		return -1;
 	}
 
-	ret = zone_manager_create_zone(ad->zone_manager, ad->zone_name, metadata);
-	if (ret != ZONE_ERROR_NONE) {
+	ret = krate_manager_create_krate(ad->krate_manager, ad->krate_name, metadata);
+	if (ret != KRATE_ERROR_NONE) {
 		return -1;
 	}
 
 	return 0;
 }
 
-int _send_zone_remove_request(appdata_s *ad)
+int _send_krate_remove_request(appdata_s *ad)
 {
 	int ret;
 
-	ret = zone_manager_destroy_zone(ad->zone_manager, ad->zone_name);
-	if (ret != ZONE_ERROR_NONE) {
+	ret = krate_manager_destroy_krate(ad->krate_manager, ad->krate_name);
+	if (ret != KRATE_ERROR_NONE) {
 		return -1;
 	}
 
@@ -117,8 +117,8 @@ static int __set_notification(notification_h noti_handle, app_control_h app_cont
 	int ret = 0;
         char *mode = NULL;
         char *noti_text[2][2] = {
-                {NOTI_CREATE_ZONE, NOTI_BODY_CREATE_ZONE},
-                {NOTI_REMOVE_ZONE, NOTI_BODY_REMOVE_ZONE}
+                {NOTI_CREATE_KRATE, NOTI_BODY_CREATE_KRATE},
+                {NOTI_REMOVE_KRATE, NOTI_BODY_REMOVE_KRATE}
         };
         char **text = NULL;
 

@@ -13,16 +13,61 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+SET(SERVER_SRCS	main.cpp
+				server.cpp
+				packman.cpp
+				launchpad.cpp
+				app-bundle.cpp
+				manager.cpp
+				app-proxy.cpp
+				package-proxy.cpp
+)
 
-SET(TARGET ${PROJECT_NAME})
+SET(DEPENDENCY	klay
+				glib-2.0
+				gio-2.0
+				libxml-2.0
+				bundle
+				aul
+				appsvc
+				pkgmgr
+				pkgmgr-info
+				libtzplatform-config
+				capi-system-system-settings
+				notification
+				libgum
+				cynara-client
+				cynara-session
+				auth-fw-admin
+)
+
+SET(SERVER_NAME ${PROJECT_NAME}d)
+
+ADD_EXECUTABLE(${SERVER_NAME} ${SERVER_SRCS})
+
+PKG_CHECK_MODULES(SERVER_DEPS REQUIRED ${DEPENDENCY})
+
+INCLUDE_DIRECTORIES(SYSTEM ${SERVER_DEPS_INCLUDE_DIRS} ${KRATE_SERVER} ${PROJECT_SOURCE_DIR})
+
+TARGET_LINK_LIBRARIES(${SERVER_NAME} ${SERVER_DEPS_LIBRARIES} pthread)
+
+SET_TARGET_PROPERTIES(${SERVER_NAME} PROPERTIES COMPILE_FLAGS "-fPIE")
+SET_TARGET_PROPERTIES(${SERVER_NAME} PROPERTIES LINK_FLAGS "-pie")
+
+TARGET_COMPILE_DEFINITIONS(${SERVER_NAME} PRIVATE
+	CONF_PATH="${CONF_DIR}"
+	RUN_PATH="${RUN_DIR}"
+	ICON_PATH="${ICON_DIR}"
+)
 
 CONFIGURE_FILE(systemd/krate.service.in systemd/krate.service)
 
+INSTALL(TARGETS ${SERVER_NAME} DESTINATION bin)
 INSTALL(FILES systemd/krate.service DESTINATION ${SYSTEMD_UNIT_DIR})
 
 INSTALL(FILES ${KRATE_TOOLS}/gumd-scripts/20_krate-add.post DESTINATION /etc/gumd/useradd.d)
 INSTALL(FILES ${KRATE_TOOLS}/gumd-scripts/20_krate-remove.post DESTINATION /etc/gumd/userdel.d)
 
 INSTALL(FILES ${KRATE_DATA}/DefaultManifest.xml DESTINATION ${CONF_DIR} RENAME owner.xml)
-INSTALL(FILES ${KRATE_DATA}/indicator_icon.png DESTINATION ${APP_ICON_DIR_PREFIX}/krate)
-INSTALL(FILES ${KRATE_DATA}/notification_sub_icon.png DESTINATION ${APP_ICON_DIR_PREFIX}/krate)
+INSTALL(FILES ${KRATE_DATA}/indicator_icon.png DESTINATION ${ICON_DIR})
+INSTALL(FILES ${KRATE_DATA}/notification_sub_icon.png DESTINATION ${ICON_DIR})

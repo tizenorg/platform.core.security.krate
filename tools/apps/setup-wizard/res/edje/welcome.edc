@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Setup-Wizard Layout
+ * Tizen Krate Setup-Wizard Layout
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
@@ -40,7 +40,7 @@ group { name: "welcome_layout";
 				color3: 85 88 88 255;
 				rel1 { relative: 0.0 0.0; to: "bg"; offset: 22 150;}
 				rel2 { relative: 1.0 0.0; to: "bg"; offset: -22 300;}
-				text { font: "Tizen:style=Regular"; size: "48"; align: 0.5 0.5; text: "Separated Zone";}
+				text { font: "Tizen:style=Regular"; size: "48"; align: 0.5 0.5; text: "Separated Krate";}
 			}
 		}
 		part { name: "icon_base";

@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Setup-Wizard application
+ * Tizen Krate Setup-Wizard application
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
@@ -38,11 +38,11 @@
 #define DELETE_ONGOING_TITLE "Deleting a folder..."
 #define DELETE_ONGOING_CONTENT "The folder will be removed from<br> your personal home screen."
 
-#define NOTI_CREATE_ZONE "Separated zone creation"
-#define NOTI_BODY_CREATE_ZONE "Tap heare to create Separated Zone."
+#define NOTI_CREATE_KRATE "Separated krate creation"
+#define NOTI_BODY_CREATE_KRATE "Tap heare to create Separated Krate."
 
-#define NOTI_REMOVE_ZONE "Separated Zone deletion"
-#define NOTI_BODY_REMOVE_ZONE "Tap here to delete Separated Zone."
+#define NOTI_REMOVE_KRATE "Separated Krate deletion"
+#define NOTI_BODY_REMOVE_KRATE "Tap here to delete Separated Krate."
 
 #define CANCEL_BUTTON "Cancel"
 #define NEXT_BUTTON "Next"
@@ -52,7 +52,7 @@
 
 #define OK_BUTTON "OK"
 #define SETUP_POPUP_HEADER "Setup Wizard"
-#define BODY_ZONE_CREATE_ERROR "Failed to create the Separated Zone."
-#define BODY_ZONE_REMOVE_ERROR "Failed to remove the Separated Zone."
+#define BODY_KRATE_CREATE_ERROR "Failed to create the Separated Krate."
+#define BODY_KRATE_REMOVE_ERROR "Failed to remove the Separated Krate."
 
 #endif /*__SETUP_TEXT_H__*/
