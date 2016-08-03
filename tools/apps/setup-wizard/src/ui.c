@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Setup-Wizard application
+ * Tizen Krate Setup-Wizard application
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
@@ -50,8 +50,8 @@ static void setup_wizard_next_cb(void *data, Evas_Object *obj, void *event_info)
 	if (!strcmp(ad->mode, "create")) {
 		_create_security_view(ad);
 	} else {
-		if (_send_zone_remove_request(ad) != 0) {
-			ecore_main_loop_thread_safe_call_sync(zone_request_fail, ad);
+		if (_send_krate_remove_request(ad) != 0) {
+			ecore_main_loop_thread_safe_call_sync(krate_request_fail, ad);
 			return;
 		}
 		_create_setup_view(ad);
@@ -96,15 +96,15 @@ static Eina_Bool __progressbar_timer_cb(void *data)
 	return ECORE_CALLBACK_RENEW;
 }
 
-void *zone_request_fail(void *user_data)
+void *krate_request_fail(void *user_data)
 {
 	Evas_Object *popup = NULL;
 	appdata_s *ad = (appdata_s *)user_data;
 
 	if (!strcmp(ad->mode, "create"))
-		popup = _create_popup(ud.win, SETUP_POPUP_HEADER, BODY_ZONE_CREATE_ERROR);
+		popup = _create_popup(ud.win, SETUP_POPUP_HEADER, BODY_KRATE_CREATE_ERROR);
 	else
-		popup = _create_popup(ud.win, SETUP_POPUP_HEADER, BODY_ZONE_REMOVE_ERROR);
+		popup = _create_popup(ud.win, SETUP_POPUP_HEADER, BODY_KRATE_REMOVE_ERROR);
 
 	Evas_Object *btn = elm_button_add(popup);
 	elm_object_style_set(btn, "popup");

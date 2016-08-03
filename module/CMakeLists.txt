@@ -1,7 +1,7 @@
 #
 # Copyright (c) 2015 Samsung Electronics Co., Ltd All Rights Reserved
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
+# Licensed under the Apache License, Version 2.0(the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
@@ -18,10 +18,12 @@ FILE(GLOB PAM_SRCS	krate.cpp
 					krate-builder.cpp
 )
 
-SET (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,noexecstack")
+SET(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-z,noexecstack")
 
-ADD_LIBRARY(pam_${PROJECT_NAME} MODULE ${PAM_SRCS})
-SET_TARGET_PROPERTIES(pam_${PROJECT_NAME} PROPERTIES  PREFIX ""
+SET(PAM_NAME pam_${PROJECT_NAME})
+
+ADD_LIBRARY(${PAM_NAME} MODULE ${PAM_SRCS})
+SET_TARGET_PROPERTIES(${PAM_NAME} PROPERTIES  PREFIX ""
 	COMPILE_DEFINITIONS PID_FILE_PATH="${RUN_INSTALL_DIR}/krate"
 	COMPILE_FLAGS "-fvisibility=hidden"
 )
@@ -39,13 +41,13 @@ PKG_CHECK_MODULES(PAM_DEPS	REQUIRED
 )
 
 INCLUDE_DIRECTORIES(${PAM_INCLUDE_DIR} ${PAM_DEPS_INCLUDE_DIRS})
-TARGET_LINK_LIBRARIES(pam_${PROJECT_NAME} ${PAM_LIBRARY} ${PAM_DEPS_LIBRARIES} pthread)
+TARGET_LINK_LIBRARIES(${PAM_NAME} ${PAM_LIBRARY} ${PAM_DEPS_LIBRARIES} pthread)
 
-TARGET_COMPILE_DEFINITIONS(pam_${PROJECT_NAME} PRIVATE
+TARGET_COMPILE_DEFINITIONS(${PAM_NAME} PRIVATE
 	CONF_PATH="${CONF_INSTALL_DIR}"
 )
 
 CONFIGURE_FILE(pam.d/systemd-user.in pam.d/systemd-user-${PROJECT_NAME})
 
-INSTALL(TARGETS pam_${PROJECT_NAME} DESTINATION ${LIB_INSTALL_DIR}/security)
+INSTALL(TARGETS ${PAM_NAME} DESTINATION ${LIB_INSTALL_DIR}/security)
 INSTALL(FILES pam.d/systemd-user-${PROJECT_NAME} DESTINATION ${PAMD_DIR})

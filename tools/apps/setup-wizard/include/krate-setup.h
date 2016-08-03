@@ -1,5 +1,5 @@
 /*
- * Tizen Zone Setup-Wizard application
+ * Tizen Krate Setup-Wizard application
  *
  * Copyright (c) 2016 Samsung Electronics Co., Ltd All Rights Reserved
  *
@@ -16,8 +16,8 @@
  * limitations under the License.
  *
  */
-#ifndef __ZONE_SETUP_H__
-#define __ZONE_SETUP_H__
+#ifndef __KRATE_SETUP_H__
+#define __KRATE_SETUP_H__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,8 +29,8 @@
 #include <dlog.h>
 #include <Elementary.h>
 #include <efl_extension.h>
-#include <zone/zone.h>
-#include <zone/app-proxy.h>
+#include <krate/krate.h>
+#include <krate/app-proxy.h>
 
 #include "setup-text.h"
 
@@ -50,11 +50,11 @@
 
 typedef struct {
 	char *mode;
-	char *zone_name;
-        char *zone_password;
+	char *krate_name;
+        char *krate_password;
 
-	zone_manager_h zone_manager;
-	int zone_event_cb_id;
+	krate_manager_h krate_manager;
+	int krate_event_cb_id;
 	bool request_done;
 
 	app_control_h app_control;
@@ -72,9 +72,9 @@ void _create_security_view(appdata_s *data);
 void _create_setup_view(appdata_s *data);
 void _create_two_button_layout(Evas_Object *parent, Evas_Object *left_button, Evas_Object *right_button);
 
-int _send_zone_create_request(appdata_s *ad);
-int _send_zone_remove_request(appdata_s *ad);
+int _send_krate_create_request(appdata_s *ad);
+int _send_krate_remove_request(appdata_s *ad);
 void _create_notification(app_control_h app_control);
-void *zone_request_fail(void *ad);
+void *krate_request_fail(void *ad);
 
-#endif /* __ZONE_SETUP_H__ */
+#endif /* __KRATE_SETUP_H__ */
